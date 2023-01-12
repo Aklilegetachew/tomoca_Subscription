@@ -144,7 +144,7 @@ if ($UserInfo) : ?>
             // $query = "SELECT * From products WHERE id=$x";;
             // $res = mysqli_query($db, $query);
             // $res = mysqli_fetch_assoc($res);
-            echo "ProductID" + $ProductId;
+            // echo "ProductID" + $ProductId;
             $selectedItem = GetSelection(intval($ProductId));
 
             $Ch_title = $selectedItem['Title'];
