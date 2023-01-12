@@ -34,13 +34,13 @@ if ($UserInfo) : ?>
   $CartEnd = intval($UserInfo['CartEnd']);
   $ProductNum = $UserInfo['NumProducts'];
   $ShopLocation = $UserInfo['ShopLocation'];
-
+  $ProductId = $UserInfo['userProductid'];
   // get user product selection on product id 
-  $Product_info = GetSelection($UserProductID);
-  $ProductPhoto = $Product_info['PhotoPath'];
-  $ProductDesc =  $Product_info['Description'];
-  $ProductSize =  $Product_info['size'];
-  $ProductSize =  $Product_info['Roast'];
+  // $Product_info = GetSelection($UserProductID);
+  // $ProductPhoto = $Product_info['PhotoPath'];
+  // $ProductDesc =  $Product_info['Description'];
+  // $ProductSize =  $Product_info['size'];
+  // $ProductSize =  $Product_info['Roast'];
 
   // shop location
   $response = GetShopLocation($ShopLocation);
@@ -139,21 +139,21 @@ if ($UserInfo) : ?>
               <img src="./images/500g2.jpg" class="productImg" alt="image here" />
             </div>
             <?php
-            for ($x = $CartStart; $x <= $CartEnd; $x++) {
-              $query = "SELECT * From cart WHERE cartId=$x";;
-              $res = mysqli_query($db, $query);
-              $res = mysqli_fetch_assoc($res);
-              $selectedItem = GetSelection($res['ProductId']);
 
-              $Ch_title = $selectedItem['Title'];
-              $Ch_quan = $res['Quantity'];
-              $Ch_prc = $selectedItem['price'];
-              $Ch_amn = $res['Amount'];
-              $Ch_type = $selectedItem['Description'];
-              $Ch_Roast = $selectedItem['Roast'];
+            // $query = "SELECT * From products WHERE id=$x";;
+            // $res = mysqli_query($db, $query);
+            // $res = mysqli_fetch_assoc($res);
+            $selectedItem = GetSelection($ProductId);
+
+            $Ch_title = $selectedItem['Title'];
+            $Ch_quan = $selectedItem['size'];
+            $Ch_prc = $selectedItem['price'];
+            $Ch_amn = $selectedItem['price'];
+            $Ch_type = $selectedItem['Description'];
+            $Ch_Roast = $selectedItem['Roast'];
 
 
-              print_r("<div class='ProductDetail'>
+            print_r("<div class='ProductDetail'>
                 <div class='ProductTitle'>
                   
                 </div>
@@ -180,7 +180,7 @@ if ($UserInfo) : ?>
                 
               </div>
               <hr /> ");
-            }
+
             ?>
             <div class="subTotal">
               <div class='ProductCheck'>
