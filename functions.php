@@ -1172,8 +1172,6 @@ function twopoints_on_earth($latitudeFrom, $longitudeFrom, $latitudeTo, $longitu
 function GetShopLocation($Shopname)
 {
 
-
-
     global $db;
     $query = "SELECT * FROM ShopAdmin WHERE Shopname like '$Shopname'";
     $res = mysqli_query($db, $query);
