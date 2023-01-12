@@ -30,8 +30,8 @@ if ($UserInfo) : ?>
   $UserOrderType = $UserInfo['orderType'];
   $startMsg = $UserInfo['StartID'];
   $LastMsg = $UserInfo['LastMsg'];
-  $CartStart = intval($UserInfo['CartStart']);
-  $CartEnd = intval($UserInfo['CartEnd']);
+  // $CartStart = intval($UserInfo['CartStart']);
+  // $CartEnd = intval($UserInfo['CartEnd']);
   $ProductNum = $UserInfo['NumProducts'];
   $ShopLocation = $UserInfo['ShopLocation'];
   $ProductId = $UserInfo['userProductid'];
@@ -143,7 +143,7 @@ if ($UserInfo) : ?>
             // $query = "SELECT * From products WHERE id=$x";;
             // $res = mysqli_query($db, $query);
             // $res = mysqli_fetch_assoc($res);
-            $selectedItem = GetSelection($ProductId);
+            $selectedItem = GetSelection(intval($ProductId));
 
             $Ch_title = $selectedItem['Title'];
             $Ch_quan = $selectedItem['size'];
