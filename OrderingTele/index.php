@@ -47,6 +47,15 @@ if ($UserInfo) : ?>
   // . $response['Shopname']
   $selectedLocation = "TO.MO.CA" . " " . $ShopLocation;
   $name = '';
+
+  $selectedItem = GetSelection(intval($ProductId));
+
+  $Ch_title = $selectedItem['Title'];
+  $Ch_quan = $selectedItem['size'];
+  $Ch_prc = $selectedItem['price'];
+  $Ch_amn = $selectedItem['price'];
+  $Ch_type = $selectedItem['Description'];
+  $Ch_Roast = $selectedItem['Roast'];
   ?>
 
   <!DOCTYPE html>
@@ -139,22 +148,6 @@ if ($UserInfo) : ?>
             <div class="imageCon">
               <img src="./images/500g2.jpg" class="productImg" alt="image here" />
             </div>
-            <?php
-
-            // $query = "SELECT * From products WHERE id=$x";;
-            // $res = mysqli_query($db, $query);
-            // $res = mysqli_fetch_assoc($res);
-            // echo "ProductID" + $ProductId;
-            $selectedItem = GetSelection(intval($ProductId));
-
-            $Ch_title = $selectedItem['Title'];
-            $Ch_quan = $selectedItem['size'];
-            $Ch_prc = $selectedItem['price'];
-            $Ch_amn = $selectedItem['price'];
-            $Ch_type = $selectedItem['Description'];
-            $Ch_Roast = $selectedItem['Roast'];
-
-            ?>
             <div class='ProductDetail'>
               <div class='ProductTitle'>
 
