@@ -1,0 +1,271 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+h2 {
+  color: white;
+}
+header {
+  margin: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background-image: url(./images/bg.jpg);
+  /* background-position: top right; */
+  background-size: cover;
+}
+
+.BigContaier {
+  max-width: fit-content;
+  display: flexbox;
+}
+
+.avatar {
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 10px;
+}
+
+.Card {
+  padding: 20px;
+  margin: 20px;
+  border-radius: 15px;
+  background-color: whitesmoke;
+  color: white;
+}
+.cardTitle {
+  color: rgba(234, 128, 22, 255);
+  margin: 15px;
+  margin-left: 0;
+  max-height: fit-content;
+}
+
+.CardBody {
+  max-width: 800px;
+  width: 85%;
+  margin: 0 auto;
+  max-height: fit-content;
+}
+
+div.ListDiv {
+  justify-content: space-evenly;
+  max-width: 300px;
+  color: white;
+}
+
+.divForm {
+  align-items: center;
+  margin-bottom: 20px;
+  margin-left: 0;
+  display: inline-block;
+  width: 100%;
+  color: black;
+}
+
+.divForm .labelForm label {
+  margin-bottom: 995px;
+  color: black;
+}
+input {
+  padding: 8px;
+  border-radius: 10px;
+  width: 100%;
+  display: inline;
+  border-color: lightgray;
+  border-style: solid;
+}
+
+.responsive-iframe {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.divForm textarea {
+  max-width: 100%;
+  border-radius: 10px;
+  padding: 10px;
+  border-color: lightgray;
+  border-style: solid;
+}
+.ImageContainer {
+  margin: 20px;
+  align-items: center;
+}
+.ImageContainer {
+  width: 270px;
+  height: 150px;
+  object-fit: cover;
+  align-items: center;
+}
+
+.ProductTitle {
+  text-align: center;
+  margin: 20px;
+}
+
+.ProductCheck {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  color: black;
+}
+
+.ConfirmBtn {
+  padding: 10px;
+  margin: 5px;
+  background-color: rgba(234, 128, 22, 255);
+  border-radius: 6px;
+  border: 0;
+  color: white;
+}
+
+.CancelBtn {
+  margin: 5px;
+  padding: 10px;
+  background-color: red;
+  border-radius: 6px;
+  border: 0;
+  color: white;
+}
+.Btns {
+  display: flex;
+  margin: 20px;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+img {
+  width: 100%;
+  height: 100%;
+}
+
+.social {
+  position: relative;
+  bottom: 20px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-top: 40px;
+  margin-left: 20px;
+  z-index: 10;
+  color: white;
+}
+.social li {
+  list-style: none;
+  color: white;
+}
+.social li a {
+  display: inline-block;
+  margin-right: 15px;
+  filter: invert(1);
+  transform: scale(0.5);
+  transition: 0.5s;
+}
+.social li a:hover {
+  transform: scale(0.5) translateY(-15px);
+}
+
+.DelivHeader {
+  display: flex;
+  justify-content: space-between;
+}
+.DelivHeader .Imglogo {
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  display: block;
+  justify-content: center;
+  align-items: center;
+}
+
+.selectM {
+  padding: 8px;
+  border-radius: 10px;
+  width: 100%;
+  display: inline;
+  border-color: lightgray;
+  border-style: solid;
+}
+
+.imageCon {
+  max-width: 300px;
+  max-height: 600px;
+}
+
+.productImg {
+  width: 100%;
+  height: 100%;
+}
+
+.subTotal {
+  margin-top: 10px;
+  background-color: rgba(234, 128, 22, 50);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.subTotal .ProductCheck {
+  margin-bottom: 5px;
+
+  color: white;
+}
+
+#cover-spin {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  display: none;
+}
+
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#cover-spin::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 48%;
+  top: 40%;
+  width: 40px;
+  height: 40px;
+  border-style: solid;
+  border-color: rgba(234, 128, 22, 50);
+  border-top-color: transparent;
+  border-width: 4px;
+  border-radius: 50%;
+  -webkit-animation: spin 0.8s linear infinite;
+  animation: spin 0.8s linear infinite;
+}

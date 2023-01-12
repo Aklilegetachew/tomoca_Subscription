@@ -1,0 +1,6 @@
+{
+    "require": {
+        "vlucas/phpdotenv": "^5.4",
+        "pusher/pusher-php-server": "^7.0"
+    }
+}

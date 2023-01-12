@@ -1,0 +1,16 @@
+{"ok":true,"result":{"message_id":19978,"from":{"id":5270072990,"is_bot":true,"first_name":"TOMOCA","username":"Tomoca_bot"},"chat":{"id":5102867263,"first_name":"Aklile","last_name":"Get","type":"private"},"date":1652879851,"text":"Welcome to Admin port to continue Select Item"}}
+
+{"ok":true,"result":{"message_id":20069,"from":{"id":5270072990,"is_bot":true,"first_name":"TOMOCA","username":"Tomoca_bot"},"chat":{"id":5102867263,"first_name":"Aklile","last_name":"Get","type":"private"},"date":1652946371,"text":"Welcome to Admin port to continue Select Item"}}
+
+{"ok":true,"result":{"message_id":20072,"from":{"id":5270072990,"is_bot":true,"first_name":"TOMOCA","username":"Tomoca_bot"},"chat":{"id":5102867263,"first_name":"Aklile","last_name":"Get","type":"private"},"date":1652946407,"text":"Welcome to Admin port to continue Select Item"}}
+
+{"ok":true,"result":{"message_id":20113,"from":{"id":5270072990,"is_bot":true,"first_name":"TOMOCA","username":"Tomoca_bot"},"chat":{"id":5102867263,"first_name":"Aklile","last_name":"Get","type":"private"},"date":1652947276,"text":"Welcome to Admin port to continue Select Item"}}
+
+{"ok":true,"result":{"message_id":20221,"from":{"id":5270072990,"is_bot":true,"first_name":"TOMOCA","username":"Tomoca_bot"},"chat":{"id":5102867263,"first_name":"Aklile","last_name":"Get","type":"private"},"date":1652958513,"text":"Welcome to Admin port to continue Select Item"}}
+
+{"ok":true,"result":{"message_id":20459,"from":{"id":5270072990,"is_bot":true,"first_name":"TOMOCA","username":"Tomoca_bot"},"chat":{"id":5102867263,"first_name":"Aklile","last_name":"Get","type":"private"},"date":1653034125,"text":"Welcome to Admin port to continue Select Item"}}
+
+{"ok":true,"result":{"message_id":4,"from":{"id":5813088726,"is_bot":true,"first_name":"testingbot","username":"tomocatestbot"},"chat":{"id":5102867263,"first_name":"Aklile","last_name":"Get","type":"private"},"date":1673128241,"text":"Welcome to Admin port to continue Select Item"}}
+
+{"ok":true,"result":{"message_id":34,"from":{"id":5813088726,"is_bot":true,"first_name":"testingbot","username":"tomocatestbot"},"chat":{"id":5102867263,"first_name":"Aklile","last_name":"Get","type":"private"},"date":1673131784,"text":"Welcome to Admin port to continue Select Item"}}
+

@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/versavvymediacom/public_html/TomocaAdminBack
+    - /bin/cp -R * $DEPLOYPATH
