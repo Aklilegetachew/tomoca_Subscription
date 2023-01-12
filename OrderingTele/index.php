@@ -43,8 +43,9 @@ if ($UserInfo) : ?>
   // $ProductSize =  $Product_info['Roast'];
 
   // shop location
-  $response = GetShopLocation($ShopLocation);
-  $selectedLocation = "TO.MO.CA" . " " . $response['Shopname'];
+  // $response = GetShopLocation($ShopLocation);
+  // . $response['Shopname']
+  $selectedLocation = "TO.MO.CA" . " ";
   $name = '';
   ?>
 
