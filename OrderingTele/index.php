@@ -154,36 +154,36 @@ if ($UserInfo) : ?>
             $Ch_type = $selectedItem['Description'];
             $Ch_Roast = $selectedItem['Roast'];
 
-
-            print_r("<div class='ProductDetail'>
-                <div class='ProductTitle'>
-                  
-                </div>
-                <div class='ProductCheck'>
-                  <p>Product Type</p>
-                  <p>$Ch_type</p>
-                </div>
-                <div class='ProductCheck'>
-                  <p>Roast type</p>
-                  <p> $Ch_Roast </p>
-                </div>
-                <div class='ProductCheck'>
-                  <p>Quantity</p>
-                  <p>  $Ch_quan X</p>
-                </div>
-                <div class='ProductCheck'>
-                  <p>Price/Bag</p>
-                  <p> $Ch_prc ETB</p>
-                </div>
-                <div class='ProductCheck'>
-                  <p>Total</p>
-                  <p>  $Ch_amn ETB</p>
-                </div>
-                
-              </div>
-              <hr /> ");
-
             ?>
+            <div class='ProductDetail'>
+              <div class='ProductTitle'>
+
+              </div>
+              <div class='ProductCheck'>
+                <p>Product Type</p>
+                <p>$Ch_type</p>
+              </div>
+              <div class='ProductCheck'>
+                <p>Roast type</p>
+                <p> $Ch_Roast </p>
+              </div>
+              <div class='ProductCheck'>
+                <p>Quantity</p>
+                <p> $Ch_quan X</p>
+              </div>
+              <div class='ProductCheck'>
+                <p>Price/Bag</p>
+                <p> $Ch_prc ETB</p>
+              </div>
+              <div class='ProductCheck'>
+                <p>Total</p>
+                <p> $Ch_amn ETB</p>
+              </div>
+
+            </div>
+            <hr />
+
+
             <div class="subTotal">
               <div class='ProductCheck'>
                 <p>Total product type</p>
