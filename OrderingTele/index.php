@@ -45,7 +45,7 @@ if ($UserInfo) : ?>
   // shop location
   // $response = GetShopLocation($ShopLocation);
   // . $response['Shopname']
-  $selectedLocation = "TO.MO.CA" . " ";
+  $selectedLocation = "TO.MO.CA" . " " . $ShopLocation;
   $name = '';
   ?>
 
@@ -134,7 +134,7 @@ if ($UserInfo) : ?>
 
 
         <div class="Card">
-          <h3 class="cardTitle">Order Summary</h3>
+          <h3 class="cardTitle">Subscription Summary</h3>
           <div class="CardBody">
             <div class="imageCon">
               <img src="./images/500g2.jpg" class="productImg" alt="image here" />
@@ -169,7 +169,7 @@ if ($UserInfo) : ?>
               </div>
               <div class='ProductCheck'>
                 <p>Total Size</p>
-                <p> <?php echo $Ch_quan; ?>X</p>
+                <p> <?php echo $Ch_quan; ?></p>
               </div>
               <div class='ProductCheck'>
                 <p>Subscription Price</p>
@@ -186,13 +186,13 @@ if ($UserInfo) : ?>
 
             <div class="subTotal">
               <div class='ProductCheck'>
-                <p>Total product type</p>
+                <p>Subscription summary</p>
                 <p> <?php echo $ProductNum; ?> </p>
               </div>
-              <div class='ProductCheck'>
+              <!-- <div class='ProductCheck'>
                 <p>Discount</p>
                 <p> 15%</p>
-              </div>
+              </div> -->
               <div class='ProductCheck'>
                 <p>Total Cost</p>
                 <p> <?php echo $UserTotalAmount; ?> ETB</p>
