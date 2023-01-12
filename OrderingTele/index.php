@@ -230,7 +230,7 @@ if ($UserInfo) : ?>
           userId: <?php echo $userId; ?>,
           userTgId: <?php echo $UserTgId ?>,
           StartMsg: <?php echo $startMsg ?>,
-          endMsg: <?php echo $CartEnd ?>
+          endMsg: <?php echo $LastMsg ?>
         }).then(res => {
           window.location.replace('https://t.me/TomTomChan');
         }).then(() => {
