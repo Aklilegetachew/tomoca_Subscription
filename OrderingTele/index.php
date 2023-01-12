@@ -160,24 +160,24 @@ if ($UserInfo) : ?>
 
               </div>
               <div class='ProductCheck'>
-                <p>Product Type</p>
-                <p>$Ch_type</p>
+                <p>Subscription Type</p>
+                <p><?php echo $Ch_type; ?></p>
               </div>
               <div class='ProductCheck'>
-                <p>Roast type</p>
-                <p> $Ch_Roast </p>
+                <p>Duration Period</p>
+                <p> <?php echo $Ch_Roast;  ?></p>
               </div>
               <div class='ProductCheck'>
-                <p>Quantity</p>
-                <p> $Ch_quan X</p>
+                <p>Total Size</p>
+                <p> <?php echo $Ch_quan; ?>X</p>
               </div>
               <div class='ProductCheck'>
-                <p>Price/Bag</p>
-                <p> $Ch_prc ETB</p>
+                <p>Subscription Price</p>
+                <p> <?php echo $Ch_prc; ?> ETB</p>
               </div>
               <div class='ProductCheck'>
                 <p>Total</p>
-                <p> $Ch_amn ETB</p>
+                <p> <?php echo $Ch_amn; ?> ETB</p>
               </div>
 
             </div>
