@@ -155,10 +155,10 @@ function ChooseProvider($data)
   // botDemo.versavvymedia.com
   $UserId = getUserID($user_id);
   $urlStr = base64_encode(urlencode($UserId));
-  $tempop = 'https://a627-196-188-123-12.ngrok.io/TomocaBot2/OrderingTele/index.php?UserId=' . $urlStr;
-  $paramansiy = 'https://a627-196-188-123-12.ngrok.io/TomocaBot2/orderingPage/index.php?UserId=' . $urlStr;
-  $parampaypal = 'https://versavvymedia.com/tomocaBot/OrderingPaypal/index.php?UserId=' . $urlStr;
-  $paramTel = 'https://versavvymedia.com/tomocaBot/OrderingTele/index.php?UserId=' . $urlStr;
+  // $tempop = 'https://a627-196-188-123-12.ngrok.io/TomocaBot2/OrderingTele/index.php?UserId=' . $urlStr;
+  // $paramansiy = 'https://a627-196-188-123-12.ngrok.io/TomocaBot2/orderingPage/index.php?UserId=' . $urlStr;
+  // $parampaypal = 'https://versavvymedia.com/tomocaBot/OrderingPaypal/index.php?UserId=' . $urlStr;
+  $paramTel = 'https://versavvymedia.com/TomocaAdminBack/OrderingTele/index.php?UserId=' . $urlStr;
   $markup  = array('inline_keyboard' => array(array(array('text' => 'telebirr',  'url' => $paramTel)), array(array('text' => 'Cancel Order', 'callback_data' => 'Cancel Order'))));
   $markupjs = json_encode($markup);
   // $markup2  = array('keyboard' => array(array('Cancel Order')), 'resize_keyboard' => true, 'selective' => true);
