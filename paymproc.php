@@ -179,7 +179,8 @@ function ChooseProviderPK($chat_id, $user_id)
   // https://a86d-196-188-123-12.ngrok.io/TomocaBot2
   $Absyniaurl = 'https://a86d-196-188-123-12.ngrok.io/TomocaBot2/orderingPage/index.php?UserId=' . $urlStr;
   $paypalurl = 'https://versavvymedia.com/tomocaBot/OrderingPaypal/index.php?UserId=' . $urlStr;
-  $paramTel = 'https://versavvymedia.com/tomocaBot/OrderingTele/index.php?UserId=' . $urlStr;
+  // $paramTel = 'https://versavvymedia.com/tomocaBot/OrderingTele/index.php?UserId=' . $urlStr;
+  $paramTel = 'https://versavvymedia.com/TomocaAdminBack/OrderingTele/index.php?UserId=' . $urlStr;
 
   $markup  = array('inline_keyboard' => array(array(array('text' => 'telebirr',  'url' => $paramTel)),  array(array('text' => 'Cancel Order', 'callback_data' => 'Cancel Order'))));
   $markupjs = json_encode($markup);
