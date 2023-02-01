@@ -37,7 +37,11 @@ if (isset($_POST['create_post'])) {
     confirm($user_result);
     // header("Location: ./users.php");
 
-    $PostItem = getAdminInput();
+    
+    $query = "SELECT * FROM products ORDER BY productId DESC LIMIT 1";;
+    $res = mysqli_query($connection, $query);
+    $respo = mysqli_fetch_assoc($res);
+    $PostItem = $respo;
   
     $res = Postphoto($PostItem);
 
