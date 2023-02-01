@@ -43,7 +43,7 @@ function Postphoto($PostItem)
     } else {
         $deliveryMode = "Every Month";
     }
-    $url = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    $url = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "/";
     $path = dirname($url);
 
     $chat_id = $_ENV['ADMIN_CHAT_ID'];
