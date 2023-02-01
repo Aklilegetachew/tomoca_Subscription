@@ -43,7 +43,8 @@ function Postphoto($PostItem)
     } else {
         $deliveryMode = "Every Month";
     }
-
+    $url = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    $path = dirname($url);
 
     $chat_id = $_ENV['ADMIN_CHAT_ID'];
     $channelName = $_ENV['CHANAEL_NAME'];
@@ -52,5 +53,5 @@ function Postphoto($PostItem)
 
     $markup  = array('inline_keyboard' => array(array(array('text' => 'Buy now', 'url' => 'https://t.me/tomocatestbot?start=' . $subscription_Id, 'callback_data' => 'Buynow',))));
 
-    $res = bot("sendPhoto?chat_id=" . $channelName . "&photo=" . $image_path . "&caption=" . $caption . "&reply_markup=" . json_encode($markup) . "&parse_mode=markdown");
+    $res = bot("sendPhoto?chat_id=" . $channelName . "&photo=" . $path . $image_path . "&caption=" . $caption . "&reply_markup=" . json_encode($markup) . "&parse_mode=markdown");
 }
