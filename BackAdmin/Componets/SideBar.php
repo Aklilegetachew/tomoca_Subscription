@@ -99,6 +99,7 @@
           <h6 class="collapse-header">Shop Tools:</h6>
           <a class="collapse-item" href="shop.php">Shop List</a>
           <a class="collapse-item" href="signup.php">Add New Shop</a>
+          <a class="collapse-item" href="addSubscription.php">Add New Subscription</a>
           <!-- <a class="collapse-item" href="forgot-password.html">Complete Orders</a> -->
         </div>
       </div>

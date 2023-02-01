@@ -9979,6 +9979,13 @@ a:focus {
   background-size: cover;
   background-blend-mode: darken;
 }
+
+.bg-add-Subscription-image {
+  background: url("../img/AddNew.png");
+  background-position: center;
+  background-size: cover;
+  background-blend-mode: darken;
+}
 .bg-password-image {
   background: url("../img/logo.jpg");
   background-position: center;
