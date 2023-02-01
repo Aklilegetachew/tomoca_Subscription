@@ -53,5 +53,5 @@ function Postphoto($PostItem)
 
     $markup  = array('inline_keyboard' => array(array(array('text' => 'Buy now', 'url' => 'https://t.me/tomocatestbot?start=' . $subscription_Id, 'callback_data' => 'Buynow',))));
 
-    $res = bot("sendPhoto?chat_id=" . $channelName . "&photo=" . $path . $image_path . "&caption=" . $caption . "&reply_markup=" . json_encode($markup) . "&parse_mode=markdown");
+    $res = bot("sendPhoto?chat_id=" . $channelName . "&photo=" . $path . "/" . $image_path . "&caption=" . $caption . "&reply_markup=" . json_encode($markup) . "&parse_mode=markdown");
 }
