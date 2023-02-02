@@ -233,7 +233,8 @@ if ($UserInfo) : ?>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js"></script>
     <!-- <script src="./telebirr.js"></script> -->
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
       const cancel = document.querySelector('#btn-tb')
       cancel.addEventListener('click', async e => {
@@ -329,8 +330,7 @@ if ($UserInfo) : ?>
         $("#datepicker").datepicker();
       });
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 
   </body>
 
