@@ -984,7 +984,7 @@ function adduser($first_name, $Last_name, $user_id, $product_Id, $MSGID, $select
     $first_name == "" ? $first_name = "customer" : $first_name;
     $Last_name = preg_replace('/[^a-z]/i', '', $Last_name);
     $Last_name == "" ? $Last_name = "Unknown" : $Last_name;
-    $totalSubscription = floatval($selectedItem['price']) ;
+    $totalSubscription = floatval($selectedItem['price']);
     $subscriptionKg = $selectedItem['size'];
 
 
@@ -1188,10 +1188,18 @@ function confirm($result)
     }
 }
 
-function setLocationComment($comment, $UID)
+function setLocationComment($comment, $SelectedDate, $UID)
 {
     global $db;
-    $query = "UPDATE users SET location = '$comment' WHERE Id=$UID";;
+    $query = "UPDATE users SET location = '$comment', selectedDate = '$SelectedDate' WHERE Id=$UID";;
+    $res = mysqli_query($db, $query);
+    return $res;
+}
+
+function setDatePicker($SelectedDate, $UID)
+{
+    global $db;
+    $query = "UPDATE users SET selectedDate = '$SelectedDate' WHERE Id=$UID";;
     $res = mysqli_query($db, $query);
     return $res;
 }

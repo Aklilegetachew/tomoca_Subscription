@@ -230,7 +230,7 @@ if ($UserInfo) : ?>
 
       const datePicker = flatpickr("#date-picker", {
         minDate: next_day,
-        maxDate: new Date().fp_incr(7)
+        maxDate: new Date().fp_incr(8)
       });
     </script>
     <script type="text/javascript">
@@ -279,7 +279,7 @@ if ($UserInfo) : ?>
         e.preventDefault();
 
         const type = SubmitPay.dataset.order;
-        const selectedDate = datePicker.selectedDates[0];
+        const selectedDates = datePicker.selectedDates[0];
         console.log(type);
         if (type == "Delivery Order") {
 
@@ -292,6 +292,7 @@ if ($UserInfo) : ?>
             await axios.post('Location.php', {
               action: 'submitlocation',
               comment: LocationVal.value,
+              selectedDate: selectedDates,
               UID: <?php echo $userId ?>
             }).then(async res => {
 
@@ -310,14 +311,25 @@ if ($UserInfo) : ?>
           if (selectedDate == '') {
             alert("Dear Customer Please insert your Pickup Date in the space provided. ")
           } else {
-            await axios.post('SUBMIT.php', {
-              action: 'submit',
-              Money: <?php echo $userId; ?>
-            }).then(res => {
-              let respo = JSON.parse(res.data)
-              console.log(respo.data.toPayUrl)
-              window.location.href = respo.data.toPayUrl
+            $('#cover-spin').show(0)
+            await axios.post('Location.php', {
+              action: 'submitDatePicker',
+              comment: LocationVal.value,
+              selectedDate: selectedDates,
+              UID: <?php echo $userId ?>
+            }).then(async res => {
+
+              await axios.post('SUBMIT.php', {
+                action: 'submit',
+                Money: <?php echo $userId; ?>
+              }).then(res => {
+                // to here
+                $("#cover-spin").hide();
+                let respo = JSON.parse(res.data)
+                window.location.href = respo.data.toPayUrl
+              })
             })
+
 
           }
 
