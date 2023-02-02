@@ -70,8 +70,9 @@ if ($UserInfo) : ?>
     <link rel="stylesheet" href="css/three-dots.css">
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
     <link rel="stylesheet" href="./style.css?v=<?php echo time(); ?>" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <title>Tomoca Coffee Shop</title>
   </head>
 
@@ -113,12 +114,6 @@ if ($UserInfo) : ?>
                   <label class="labelForm" for="Markuparea">Delivery Comment:</label><br />
                   <textarea id="LocationComment" name="Markuparea" rows="4" cols="50" placeholder="Please enter location detail"></textarea>
                 </div>
-                <div class="divForm">
-                  <div class="form-group">
-                    <label for="datepicker">Select Date:</label>
-                    <input type="text" class="form-control" id="datepicker">
-                  </div>
-                </div>
               </div>
 
             </div>
@@ -144,10 +139,7 @@ if ($UserInfo) : ?>
                 </div>
                 <div class="divForm">
                   <label class="labelForm" for="cars">Schedule Pickup date:</label>
-                  <div class="form-group">
-                    <label for="datepicker">Select Date:</label>
-                    <input type="text" class="form-control" id="datepicker">
-                  </div>
+                  <input type="text" id="date-picker">
                 </div>
               </div>
             </div>
@@ -231,11 +223,9 @@ if ($UserInfo) : ?>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js"></script>
     <!-- <script src="./telebirr.js"></script> -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script>
-      $(function() {
-        $("#datepicker").datepicker();
+      flatpickr("#date-picker", {
+        mode: "multiple"
       });
     </script>
     <script type="text/javascript">
@@ -325,13 +315,8 @@ if ($UserInfo) : ?>
           })
 
         }
-
-
-
       })
     </script>
-
-
   </body>
 
   </html>
@@ -360,8 +345,6 @@ if ($UserInfo) : ?>
 
 
   </body>
-
-
 
   </html>
 
