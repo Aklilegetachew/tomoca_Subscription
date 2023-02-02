@@ -356,45 +356,62 @@ function ClearQuan($user_id)
     return $res;
 }
 
-function SetCompletedPickup($UserInfo, $auth_amount, $transactionID, $Payment)
+function SetCompletedPickup($UserInfo, $auth_amount, $transactionID, $ProductInfo, $Payment)
 {
     global $db;
     $PhoneNum = $UserInfo['PhoneNum'];
     $UserTgId = $UserInfo['UserId'];
-    $UserName = $UserInfo['UserName'];
-    $LastName = $UserInfo['LastName'];
-    $cartStart = $UserInfo['CartStart'];
-    $cartEnd = $UserInfo['CartEnd'];
+    $UserName  = $UserInfo['UserName'] . $UserInfo['LastName'];
     $NumProducts = $UserInfo['NumProducts'];
     $ShopLocation = $UserInfo['ShopLocation'];
+    $BusinessName = $UserInfo['TinName'];
+    $TinNumber = $UserInfo['TinNumber'];
+    $orderType = $UserInfo['orderType'];
+    $bagSize = $UserInfo['quantityHolder'];
+    $productId = $UserInfo['userProductid'];
+    $selectedFirstDate = $UserInfo['selectedDate'];
+    $sub_Month = $ProductInfo['subscription_period'];
+    $monthsToAdd = number_format($sub_Month);
+    $UserTgId = $UserInfo['UserId'];
+    date_default_timezone_set("Africa/Addis_Ababa");
+    $currentDate = new DateTime();
+    $newDate = $currentDate->modify("+$monthsToAdd months");
+    $newDateString = $newDate->format('Y-m-d');
 
-    $query = "INSERT INTO pickuppayed(UserID, FirstName, LastName, PhoneNumber, CartStart, CartEnd, TotalAmount, NumProduct, TransactionID, Payment, ShopLocation) VALUES ('$UserTgId', '$UserName', '$LastName', '$PhoneNum', '$cartStart', '$cartEnd', '$auth_amount', '$NumProducts', '$transactionID', '$Payment', '$ShopLocation')";
+    $query = "INSERT INTO subscriptionlist(sub_name, sub_phone, sub_startingDate, sub_endDate, next_orderDate, orderType, product_id, payment_Total, payment_status, transaction_number, ShopLocation, sub_status, telegramId) VALUES ('$UserName', '$PhoneNum', '$currentDate', '$newDateString', '$selectedFirstDate', '$orderType', '$productId', '$auth_amount', '$Payment', '$transactionID', '$ShopLocation', 'Online', '$UserTgId')";
     $res = mysqli_query($db, $query);
     if (!$res) {
         die('query failed' . mysqli_error($db));
     }
 }
 
-function SetCompletedDelivery($UserInfo, $auth_amount, $transactionID, $Payment, $Pickupurl, $DeliveryUrl, $DeliveryID)
+function SetCompletedDelivery($UserInfo, $auth_amount, $transactionID, $ProductInfo, $Payment)
 {
-    date_default_timezone_set("Africa/Addis_Ababa");
-    $timeOrder = date("h:i a");
-    $dateOrder = date("Y-m-d");
-
     global $db;
     $PhoneNum = $UserInfo['PhoneNum'];
     $UserTgId = $UserInfo['UserId'];
-    $UserName = $UserInfo['UserName'];
-    $LastName = $UserInfo['LastName'];
-    $cartStart = $UserInfo['CartStart'];
-    $cartEnd = $UserInfo['CartEnd'];
+    $UserName  = $UserInfo['UserName'] . $UserInfo['LastName'];
     $NumProducts = $UserInfo['NumProducts'];
     $ShopLocation = $UserInfo['ShopLocation'];
     $BusinessName = $UserInfo['TinName'];
     $TinNumber = $UserInfo['TinNumber'];
-    $deliveryID = $UserInfo['DeliveryID'];
+    $orderType = $UserInfo['orderType'];
+    $bagSize = $UserInfo['quantityHolder'];
+    $productId = $UserInfo['userProductid'];
+    $selectedFirstDate = $UserInfo['selectedDate'];
+    $sub_Month = $ProductInfo['subscription_period'];
+    $monthsToAdd = number_format($sub_Month);
+    $UserTgId = $UserInfo['UserId'];
+    date_default_timezone_set("Africa/Addis_Ababa");
+    $currentDate = new DateTime();
+    $newDate = $currentDate->modify("+$monthsToAdd months");
+    $newDateString = $newDate->format('Y-m-d');
+    $lat = $UserInfo["lat"];
+    $longtidue = $UserInfo["longtiud"];
+    $location = $UserInfo["location"];
 
-    $query = "INSERT INTO deliveryorders(UserTGID, FirstName, LastName, PhoneNumber, CartStart, CartEnd, Total, Quantity, OrderNumber, Pickupurl, DeliveryUrl, ShopLocation, TinName, TinNumber, DeliveryID, orderDate, orderTime) VALUES ('$UserTgId', '$UserName', '$LastName', '$PhoneNum', '$cartStart', '$cartEnd', '$auth_amount', '$NumProducts', '$transactionID', '$Pickupurl' , '$DeliveryUrl' , '$ShopLocation' , '$BusinessName' , '$TinNumber' , '$DeliveryID' , '$dateOrder' , '$timeOrder')";
+
+    $query = "INSERT INTO subscriptionlist(sub_name, sub_phone, sub_startingDate, sub_endDate, next_orderDate, orderType, product_id, payment_Total, payment_status, transaction_number, ShopLocation, sub_status, telegramId, tin_num, tin_name, longt, lat, localtion) VALUES ('$UserName', '$PhoneNum', '$currentDate', '$newDateString', '$selectedFirstDate', '$orderType', '$productId', '$auth_amount', '$Payment', '$transactionID', '$ShopLocation', 'Online', '$UserTgId', '$TinNumber', '$BusinessName' , '$longtidue', '$lat', '$location')";
     $res = mysqli_query($db, $query);
     if (!$res) {
         die('query failed' . mysqli_error($db));
@@ -537,6 +554,15 @@ function getUserInput($UserID)
     return $respo;
 }
 
+function getProductInfo($PID)
+{
+    global $db;
+    $query = "SELECT * FROM products WHERE productId=$PID";;
+    $res = mysqli_query($db, $query);
+    $respo = mysqli_fetch_assoc($res);
+    return $respo;
+}
+
 function getUserID($user_id)
 {
     global $db;
@@ -545,6 +571,8 @@ function getUserID($user_id)
     $respo = mysqli_fetch_assoc($res);
     return $respo['MAX(Id)'];
 }
+
+
 
 function getCartIDstart($user_id)
 {
@@ -606,7 +634,7 @@ function setShop($UID, $shopLocation)
 }
 
 
-function SendCompletedMsg($UserTgId, $userId, $reqtransaction_id, $MSG)
+function SendCompletedMsg($UserTgId, $userId, $reqtransaction_id, $MSG, $NextDate)
 {
 
 
@@ -615,13 +643,23 @@ function SendCompletedMsg($UserTgId, $userId, $reqtransaction_id, $MSG)
     $ShopLocationText = "TO.MO.CA. " . $MSG;
 
     $detailText = urlencode("
-    ✅ Order Completed Successfully\n\nOrder Number:" . $reqtransaction_id  . "\n\nPick your order at:" . $ShopLocationText . "\n\nThank you for shopping with us " . "\n\n");
+    ✅ successfully subscribed\n\nOrder Number:" . $reqtransaction_id  . "\n\nPick Up Location:" . $ShopLocationText . "\n\nUpcomming Pick up date: " . $NextDate . "\n\n" . "We appreciate you being a subscriber. " . "\n\n");
 
     message($UserTgId, $detailText);
+}
 
-    $Lat = floatval($ShopInfo['Lat']);
-    $longt = floatval($ShopInfo['Longt']);
-    senLocationMsg($UserTgId, $Lat, $longt);
+function SendCompletedDelivery($UserTgId, $Userlocation, $reqtransaction_id, $MSG, $NextDate)
+{
+
+
+    $ShopInfo = GetShopLocation($MSG);
+
+    $ShopLocationText = "TO.MO.CA. " . $MSG;
+
+    $detailText = urlencode("
+    ✅ successfully subscribed\n\nOrder Number:" . $reqtransaction_id  . "\n\nPicked Up Location:" . $ShopLocationText . "\n\nDelivery Location:" . $Userlocation . "\n\nUpcomming Delivery date: " . $NextDate . "\n\n" . "We appreciate you being a subscriber. " . "\n\n");
+
+    message($UserTgId, $detailText);
 }
 
 
@@ -641,7 +679,7 @@ function SendNotificationMsg($UserInfo, $msg)
     $Fullname = $UserInfo['UserName'] . $UserInfo['LastName'];
     $phoneNumber = $UserInfo['PhoneNum'];
     $TotalAmount = $UserInfo['TotalAmount'];
-    $NumProduct = $UserInfo['NumProducts'];
+
     $shopLocation = $UserInfo['ShopLocation'];
 
     date_default_timezone_set("Africa/Addis_Ababa");
@@ -652,7 +690,7 @@ function SendNotificationMsg($UserInfo, $msg)
     // $ShopLocationText = "TO.MO.CA. " . $MSG;
 
     $detailText = urlencode("
-    🔔" . $msg . "\n\nCustomer Name:" . $Fullname  . "\n\nPhone Number:" . $phoneNumber . "\n\n " . "Quantity:" . $NumProduct . "\n\nTotal Amount:" . $TotalAmount . "\n\nShop Location:" . $shopLocation . "\n\nOrder Date:" . $dateOrder . "\n\nOrder Time:" . $timeOrder . "\n\n" . "\n\nAdmin Link:" . $timeOrder . "\n\n");
+    🔔" . $msg . "\n\nCustomer Name:" . $Fullname  . "\n\nPhone Number:" . $phoneNumber . "\n\nTotal Amount:" . $TotalAmount . "\n\nShop Location:" . $shopLocation . "\n\n");
 
     message(5102867263, $detailText);
 
@@ -1190,16 +1228,25 @@ function confirm($result)
 
 function setLocationComment($comment, $SelectedDate, $UID)
 {
+    $date = new DateTime($SelectedDate, new DateTimeZone('UTC'));
+    $date->setTimezone(new DateTimeZone('Africa/Addis_Ababa'));
+    $selectedDate = $date->format('Y-m-d');
+
     global $db;
-    $query = "UPDATE users SET location = '$comment', selectedDate = '$SelectedDate' WHERE Id=$UID";;
+    $query = "UPDATE users SET location = '$comment', selectedDate = '$selectedDate' WHERE Id=$UID";;
     $res = mysqli_query($db, $query);
     return $res;
 }
 
 function setDatePicker($SelectedDate, $UID)
 {
+    $date = new DateTime($SelectedDate, new DateTimeZone('UTC'));
+    $date->setTimezone(new DateTimeZone('Africa/Addis_Ababa'));
+    $selectedDate = $date->format('Y-m-d');
+
+
     global $db;
-    $query = "UPDATE users SET selectedDate = '$SelectedDate' WHERE Id=$UID";;
+    $query = "UPDATE users SET selectedDate = '$selectedDate' WHERE Id=$UID";;
     $res = mysqli_query($db, $query);
     return $res;
 }

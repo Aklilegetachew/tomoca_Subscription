@@ -279,11 +279,13 @@ if ($UserInfo) : ?>
         e.preventDefault();
 
         const type = SubmitPay.dataset.order;
-        const selectedDates = datePicker.selectedDates[0];
-        console.log(type);
+        const pickedDates = datePicker.selectedDates[0];
+        const dateString = pickedDates.toISOString().substring(0, 10);
+        console.log(pickedDates);
+
         if (type == "Delivery Order") {
 
-          if (LocationVal.value == '' || selectedDate == '') {
+          if (LocationVal.value == '' || pickedDates == '') {
             console.log("null")
             alert("Dear Customer Please insert your Location Address And Delivery Date in the space provided. ")
           } else {
@@ -292,42 +294,41 @@ if ($UserInfo) : ?>
             await axios.post('Location.php', {
               action: 'submitlocation',
               comment: LocationVal.value,
-              selectedDate: selectedDates,
+              selectedDate: dateString,
               UID: <?php echo $userId ?>
             }).then(async res => {
-
-              await axios.post('SUBMIT.php', {
-                action: 'submit',
-                Money: <?php echo $userId; ?>
-              }).then(res => {
-                // to here
-                $("#cover-spin").hide();
-                let respo = JSON.parse(res.data)
-                window.location.href = respo.data.toPayUrl
-              })
+              console.log(res)
+              // await axios.post('SUBMIT.php', {
+              //   action: 'submit',
+              //   Money: <?php echo $userId; ?>
+              // }).then(res => {
+              //   // to here
+              //   $("#cover-spin").hide();
+              //   let respo = JSON.parse(res.data)
+              //   window.location.href = respo.data.toPayUrl
+              // })
             })
           }
         } else {
-          if (selectedDate == '') {
+          if (pickedDates == '') {
             alert("Dear Customer Please insert your Pickup Date in the space provided. ")
           } else {
             $('#cover-spin').show(0)
             await axios.post('Location.php', {
               action: 'submitDatePicker',
-              comment: LocationVal.value,
-              selectedDate: selectedDates,
+              selectedDate: dateString,
               UID: <?php echo $userId ?>
             }).then(async res => {
-
-              await axios.post('SUBMIT.php', {
-                action: 'submit',
-                Money: <?php echo $userId; ?>
-              }).then(res => {
-                // to here
-                $("#cover-spin").hide();
-                let respo = JSON.parse(res.data)
-                window.location.href = respo.data.toPayUrl
-              })
+              console.log(res)
+              // await axios.post('SUBMIT.php', {
+              //   action: 'submit',
+              //   Money: <?php echo $userId; ?>
+              // }).then(res => {
+              //   // to here
+              //   $("#cover-spin").hide();
+              //   let respo = JSON.parse(res.data)
+              //   window.location.href = respo.data.toPayUrl
+              // })
             })
 
 

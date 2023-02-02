@@ -1,6 +1,6 @@
 <?php
 // require '../config/db.php';
- require './botFunctions.php';
+require './botFunctions.php';
 
 
 
@@ -14,6 +14,7 @@ if (isset($_POST['create_post'])) {
     $deliveryOptions = escape($_POST['deliveryOptions']);
     $PackageSize = escape($_POST['PackageSize']);
     $Description = escape($_POST['Description']);
+    $packageType = escape($_POST["packageType"]);
     // $PhotoPath = escape($_POST['postPic']);
     // echo $PhotoPath;
     $target_dir = "uploads/";
@@ -29,22 +30,21 @@ if (isset($_POST['create_post'])) {
     }
     // encript password
 
-    $query = "INSERT INTO products(Title, photo, price, Description, size, subscription_period, delivery_option) ";
-    $query .= "VALUES('$Subscription', '$photo_path', '$totalPrice', '$Description','$PackageSize','$subPeriod','$deliveryOptions') ";
+    $query = "INSERT INTO products(Title, photo, price, Description, size, subscription_period, delivery_option, package_Type) ";
+    $query .= "VALUES('$Subscription', '$photo_path', '$totalPrice', '$Description','$PackageSize','$subPeriod','$deliveryOptions', '$packageType') ";
 
     $user_result = mysqli_query($connection, $query);
 
     confirm($user_result);
     // header("Location: ./users.php");
 
-    
+
     $query = "SELECT * FROM products ORDER BY productId DESC LIMIT 1";;
     $res = mysqli_query($connection, $query);
     $respo = mysqli_fetch_assoc($res);
     $PostItem = $respo;
-  
-    $res = Postphoto($PostItem);
 
+    $res = Postphoto($PostItem);
 }
 
 
@@ -83,6 +83,15 @@ if (isset($_POST['create_post'])) {
                                             <h1 class="h4 text-gray-900 mb-4">Add New Package</h1>
                                         </div>
                                         <form class="user" action="" method="POST" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <label for="packageType">Select Package Type</label>
+
+                                                <select name="packageType" id="packageType" class="form-control form-control-user">
+                                                    <option value="SUB">Subscription</option>
+                                                    <option value="MEB">Membership</option>
+
+                                                </select>
+                                            </div>
 
                                             <div class="form-group">
                                                 <input type="text" class="form-control form-control-user" id="" placeholder="Subscription Name" name="Subscription">
@@ -102,6 +111,7 @@ if (isset($_POST['create_post'])) {
                                                     <option value="1">Per Week</option>
                                                     <option value="2">Bi-Weekly</option>
                                                     <option value="3">Monthly</option>
+                                                    <option value="3">Life Time</option>
                                                 </select>
                                             </div>
 

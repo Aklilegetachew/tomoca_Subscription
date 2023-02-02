@@ -68,6 +68,49 @@ $Amount = $jsonnofityData['totalAmount'];
 $userId = returnid($tansactionchars);
 file_put_contents("Lemlem1.txt", $userId . PHP_EOL . PHP_EOL, FILE_APPEND);
 
+// $UserInfo = getUserInput($userId);
+// $OrderType = $UserInfo['orderType'];
+// $UserTgId = $UserInfo['UserId'];
+// $MsgLast = $UserInfo['LastMsg'];
+// $MsgStart = $UserInfo['StartID'];
+// $PickUpLocation = $UserInfo['ShopLocation'];
+// $Fullname = $UserInfo['UserName'] . $UserInfo['LastName'];
+
+// if ($OrderType == "Pickup Order") {
+
+
+// 	SetCompletedPickup($UserInfo, $Amount, $orderNumber, "payed");
+// 	// deleteMessage($UserTgId, $MsgLast, $MsgStart);
+// 	SendCompletedMsg($UserTgId, $userId, $orderNumber, $PickUpLocation);
+// 	SendNotificationMsg($UserInfo, 'New pickup order');
+// 	setStat($UserInfo);
+// 	// pusher
+// 	$data['message'] = 'New pickup order arrived';
+// 	$data['shop'] = $PickUpLocation;
+// 	$data['name'] = $Fullname;
+// 	$data['Orderdate'] = date("M Y,d");
+// 	$pusher->trigger('my-channel', 'my-event', $data);
+
+// 	DeletRow($userId);
+// } elseif ($OrderType == "Delivery Order") {
+// 	$res = Eshiservice($userId, $UserInfo);
+// 	$update = json_decode($res, true);
+// 	SetCompletedDelivery($UserInfo, $Amount, $orderNumber, "payed", $update['data']['pickup_tracking_link'], $update['data']['delivery_tracing_link'], $update['data']['job_id']);
+// 	SendCompletedMsgDelivery($UserTgId, $userId, $orderNumber, $update['data']['delivery_tracing_link'], $update['data']['job_id']);
+// 	SendNotificationMsg($UserInfo, 'New delivery order');
+// 	setStat($UserInfo);
+// 	// pusher
+
+// 	$data['message'] = 'New delivery order arrived';
+// 	$data['shop'] = $PickUpLocation;
+// 	$data['name'] = $Fullname;
+// 	$data['Orderdate'] = date("M Y,d");
+// 	$pusher->trigger('my-channel', 'my-event', $data);
+// 	DeletRow($userId);
+// }
+
+// this is the subsceription edit 
+
 $UserInfo = getUserInput($userId);
 $OrderType = $UserInfo['orderType'];
 $UserTgId = $UserInfo['UserId'];
@@ -75,36 +118,24 @@ $MsgLast = $UserInfo['LastMsg'];
 $MsgStart = $UserInfo['StartID'];
 $PickUpLocation = $UserInfo['ShopLocation'];
 $Fullname = $UserInfo['UserName'] . $UserInfo['LastName'];
+$productId = $UserInfo['userProductid'];
+$productInfo = getProductInfo($productId);
+$selectedFirstDate = $UserInfo['selectedDate'];
+$Userlocation = $UserInfo['location'];
 
 if ($OrderType == "Pickup Order") {
 
-
-	SetCompletedPickup($UserInfo, $Amount, $orderNumber, "payed");
-	// deleteMessage($UserTgId, $MsgLast, $MsgStart);
-	SendCompletedMsg($UserTgId, $userId, $orderNumber, $PickUpLocation);
-	SendNotificationMsg($UserInfo, 'New pickup order');
-	setStat($UserInfo);
-	// pusher
-	$data['message'] = 'New pickup order arrived';
-	$data['shop'] = $PickUpLocation;
-	$data['name'] = $Fullname;
-	$data['Orderdate'] = date("M Y,d");
-	$pusher->trigger('my-channel', 'my-event', $data);
-
-	DeletRow($userId);
+	SetCompletedPickup($UserInfo, $Amount, $orderNumber, $productInfo, "paid");
+	deleteMessage($UserTgId, $MsgLast, $MsgStart);
+	SendCompletedMsg($UserTgId, $userId, $orderNumber, $PickUpLocation, $selectedFirstDate);
+	SendNotificationMsg($UserInfo, 'New Subscription');
+	
 } elseif ($OrderType == "Delivery Order") {
-	$res = Eshiservice($userId, $UserInfo);
-	$update = json_decode($res, true);
-	SetCompletedDelivery($UserInfo, $Amount, $orderNumber, "payed", $update['data']['pickup_tracking_link'], $update['data']['delivery_tracing_link'], $update['data']['job_id']);
-	SendCompletedMsgDelivery($UserTgId, $userId, $orderNumber, $update['data']['delivery_tracing_link'], $update['data']['job_id']);
-	SendNotificationMsg($UserInfo, 'New delivery order');
-	setStat($UserInfo);
-	// pusher
+	SetCompletedDelivery($UserInfo, $Amount, $orderNumber, $productInfo, "paid");
+	deleteMessage($UserTgId, $MsgLast, $MsgStart);
+	SendCompletedDelivery($UserTgId, $Userlocation, $orderNumber, $PickUpLocation, $selectedFirstDate);
+	SendNotificationMsg($UserInfo, 'New Subscription');
+} elseif ($OrderType == "Membership") {
 
-	$data['message'] = 'New delivery order arrived';
-	$data['shop'] = $PickUpLocation;
-	$data['name'] = $Fullname;
-	$data['Orderdate'] = date("M Y,d");
-	$pusher->trigger('my-channel', 'my-event', $data);
-	DeletRow($userId);
+
 }
