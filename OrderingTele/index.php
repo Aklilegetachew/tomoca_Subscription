@@ -224,8 +224,13 @@ if ($UserInfo) : ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js"></script>
     <!-- <script src="./telebirr.js"></script> -->
     <script>
-      flatpickr("#date-picker", {
-        mode: "multiple"
+      var today = new Date();
+      var next_day = new Date();
+      next_day.setDate(today.getDate() + 1);
+
+      const datePicker = flatpickr("#date-picker", {
+        minDate: next_day,
+        maxDate: new Date().fp_incr(7)
       });
     </script>
     <script type="text/javascript">
@@ -242,7 +247,6 @@ if ($UserInfo) : ?>
           window.location.replace('https://t.me/TomTomChan');
         }).then(() => {
           window.href = 'https://t.me/TomTomChan'
-
         })
       })
 
@@ -275,17 +279,16 @@ if ($UserInfo) : ?>
         e.preventDefault();
 
         const type = SubmitPay.dataset.order;
-
+        const selectedDate = datePicker.selectedDates[0];
         console.log(type);
         if (type == "Delivery Order") {
 
-          if (LocationVal.value == '') {
+          if (LocationVal.value == '' || selectedDate == '') {
             console.log("null")
-            alert("Dear Customer Please insert your Location Address in the space provided. ")
+            alert("Dear Customer Please insert your Location Address And Delivery Date in the space provided. ")
           } else {
             // here 
             $('#cover-spin').show(0)
-            // $('body').append('<div id="cover-spin"></div>');
             await axios.post('Location.php', {
               action: 'submitlocation',
               comment: LocationVal.value,
@@ -304,15 +307,20 @@ if ($UserInfo) : ?>
             })
           }
         } else {
-          await axios.post('SUBMIT.php', {
-            action: 'submit',
-            Money: <?php echo $userId; ?>
-          }).then(res => {
+          if (selectedDate == '') {
+            alert("Dear Customer Please insert your Pickup Date in the space provided. ")
+          } else {
+            await axios.post('SUBMIT.php', {
+              action: 'submit',
+              Money: <?php echo $userId; ?>
+            }).then(res => {
+              let respo = JSON.parse(res.data)
+              console.log(respo.data.toPayUrl)
+              window.location.href = respo.data.toPayUrl
+            })
 
-            let respo = JSON.parse(res.data)
-            console.log(respo.data.toPayUrl)
-            window.location.href = respo.data.toPayUrl
-          })
+          }
+
 
         }
       })
