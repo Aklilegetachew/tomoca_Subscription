@@ -49,9 +49,9 @@ function Postphoto($PostItem)
     $chat_id = $_ENV['ADMIN_CHAT_ID'];
     $channelName = $_ENV['CHANAEL_NAME'];
 
-    $caption = urlencode("*Subscription:*" . $subscription_title . "\n\n" . "*Subscription Detail:* " . $subscription_Desc . "\n\n" . "*Subscription period:* " . $subscription_Period . " Months" . "\n\n" . "*Size:* " . $subscription_size . "*Delivery Mode:* " . $deliveryMode . "\n\n" . "*Price:* " . $subscription_price . "ETB" . "\n");
+    $caption = urlencode("*Subscription:*" . $subscription_title . "\n\n" . "*Subscription Detail:* " . $subscription_Desc . "\n\n" . "*Subscription period:* " . $subscription_Period . " Months" . "\n\n" . "*Size:* " . $subscription_size . "\n\n" . "*Delivery Mode:* " . $deliveryMode . "\n\n" . "*Price:* " . $subscription_price . "ETB" . "\n");
 
-    $markup  = array('inline_keyboard' => array(array(array('text' => 'Buy now', 'url' => 'https://t.me/tomocatestbot?start=' . $subscription_Id, 'callback_data' => 'Buynow',))));
+    $markup  = array('inline_keyboard' => array(array(array('text' => 'Subscribe Now', 'url' => 'https://t.me/tomocatestbot?start=' . $subscription_Id, 'callback_data' => 'Buynow',))));
 
     $res = bot("sendPhoto?chat_id=" . $channelName . "&photo=" . $path . "/" . $image_path . "&caption=" . $caption . "&reply_markup=" . json_encode($markup) . "&parse_mode=markdown");
 }

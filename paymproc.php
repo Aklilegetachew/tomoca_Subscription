@@ -241,9 +241,9 @@ function showSubscriptionDetail($UIDS, $chat_id, $message_id, $selectedItem)
   $Ch_title = $selectedItem['Title'];
   $Ch_quan = $selectedItem['size'];
   $Ch_prc = $selectedItem['price'];
-  $Ch_amn = $selectedItem['Roast'];
+  $Ch_amn = $selectedItem['subscription_period'];
   $Ch_Update = "Subscription Type";
-  $detailText = urlencode("\n\nSubscription: " . $Ch_title . "\n\n" . "Total Size: " . $Ch_quan . "\n\n" . "Subscription Price:" . $Ch_prc . "birr" . "\n\n"  . "Subscription Period:" . $Ch_amn . "" . "\n\n");
+  $detailText = urlencode("\n\nSubscription: " . $Ch_title . "\n\n" . "Total Size: " . $Ch_quan . "\n\n" . "Subscription Total:" . $Ch_prc . "birr" . "\n\n"  . "Subscription Period:" . $Ch_amn . "" . "\n\n");
 
 
   $markup  = array('keyboard' => array(array('Next'), array('Go Back', 'Cancel')), 'resize_keyboard' => true, 'selective' => true, 'one_time_keyboard' => true);

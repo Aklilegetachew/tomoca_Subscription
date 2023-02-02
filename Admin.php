@@ -73,7 +73,7 @@ function postProduct($data)
   $product_Id = $PostItem['productId'];
   $product_Roast = $PostItem['Roast'];
 
-  PostToChannel($ChannelName, $product_title, $product_image, $product_price, $product_Desc, $product_Id, $data, $product_size, $product_Roast);
+ PostToChannel($ChannelName, $product_title, $product_image, $product_price, $product_Desc, $product_Id, $data, $product_size, $product_Roast);
 }
 
 function goingBack($data)
