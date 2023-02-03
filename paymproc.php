@@ -389,6 +389,11 @@ function DeletRequest($userIdDb)
   DeletRow($userIdDb);
 }
 
+function DeletRequestMEM($userIdDb)
+{
+  DeletRowMem($userIdDb);
+}
+
 
 function ChooseShop($chat_id)
 {

@@ -102,6 +102,16 @@ function getStep($user_id)
     return $res2['step'];
 }
 
+
+function getStepMem($user_id)
+{
+    global $db;
+    $query = "SELECT step From membership WHERE telegramID=$user_id";
+    $res = mysqli_query($db, $query);
+    $res2 = mysqli_fetch_assoc($res);
+    return $res2['step'];
+}
+
 function setStep($user_id, $step)
 {
     global $db;
@@ -562,6 +572,15 @@ function getUserInput($UserID)
     return $respo;
 }
 
+function getUserInputMem($UserID)
+{
+    global $db;
+    $query = "SELECT * FROM membership WHERE id=$UserID";;
+    $res = mysqli_query($db, $query);
+    $respo = mysqli_fetch_assoc($res);
+    return $respo;
+}
+
 function getProductInfo($PID)
 {
     global $db;
@@ -580,6 +599,14 @@ function getUserID($user_id)
     return $respo['MAX(Id)'];
 }
 
+function getUserIDMem($user_id)
+{
+    global $db;
+    $query = "SELECT MAX(id) FROM membership WHERE telegramID=$user_id";;
+    $res = mysqli_query($db, $query);
+    $respo = mysqli_fetch_assoc($res);
+    return $respo['MAX(id)'];
+}
 
 
 function getCartIDstart($user_id)
@@ -616,6 +643,13 @@ function setphone($user_id, $phonenum)
 {
     global $db;
     $query = "UPDATE users SET PhoneNum = '$phonenum' WHERE UserId=$user_id";;
+    $res = mysqli_query($db, $query);
+    return $res;
+}
+function setphoneMem($user_id, $phonenum)
+{
+    global $db;
+    $query = "UPDATE membership SET member_phone = '$phonenum' WHERE telegramID=$user_id";;
     $res = mysqli_query($db, $query);
     return $res;
 }
@@ -1062,7 +1096,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
 
 
         // Retrieve the expiredate from the database
-        $result = mysqli_query($db, "SELECT Exp_date FROM membership WHERE telegramID = $user_id");
+        $result = mysqli_query($db, "SELECT Exp_date FROM membership WHERE telegramID = $user_id AND step = 'MEMBER'");
         $row = mysqli_fetch_assoc($result);
         $expiredate = new DateTime($row['Exp_date']);
 
@@ -1228,6 +1262,15 @@ function DeletRow($userIdDb)
 
     global $db;
     $query = "DELETE FROM users WHERE Id= $userIdDb";;
+    $res = mysqli_query($db, $query);
+    return $res;
+}
+
+function DeletRowMem($userIdDb)
+{
+
+    global $db;
+    $query = "DELETE FROM membership WHERE id= $userIdDb";;
     $res = mysqli_query($db, $query);
     return $res;
 }
