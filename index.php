@@ -134,10 +134,25 @@ if ($user_id !== 5102867263) {
 
       $ID = intval($selectedItem);
       $selection = GetSelection($ID);
-      adduser($first_name, $Last_name, $user_id, $ID, $message_id, $selection);
-      setStep($user_id, "SubscriptionStart");
-      DetailText($chat_id);
-      showSubscriptionDetail($UID, $chat_id, $message_id,  $selection);
+      if ($selection['package_Type'] === 'MEB') {
+        $respo =  addMember($first_name, $Last_name, $user_id, $ID, $message_id, $selection);
+        if ($respo) {
+          setStepMem($user_id, "MembershipStart");
+          DetailTextMem($chat_id);
+          showMembershipDetail($UID, $chat_id, $message_id,  $selection);
+        } else {
+          $markup  = array('inline_keyboard' => array(array(array('text' => 'Back to Channel',  'url' => 'https://t.me/TomTomChan'))));
+          $markupjs = json_encode($markup);
+          message($chat_id, "You are currently a Member. ", $markupjs);
+        }
+      } else {
+
+        adduser($first_name, $Last_name, $user_id, $ID, $message_id, $selection);
+        setStep($user_id, "SubscriptionStart");
+        DetailText($chat_id);
+        showSubscriptionDetail($UID, $chat_id, $message_id,  $selection);
+      }
+
       // showdetail($UID, $chat_id, $user_id, $message_id);
       // $res = setQuantity("0");
     }

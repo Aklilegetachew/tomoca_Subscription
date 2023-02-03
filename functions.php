@@ -110,6 +110,14 @@ function setStep($user_id, $step)
     return $res;
 }
 
+function setStepMem($user_id, $step)
+{
+    global $db;
+    $query = "UPDATE membership SET step = '$step' WHERE telegramID=$user_id";;
+    $res = mysqli_query($db, $query);
+    return $res;
+}
+
 function setStepPayed($user_id, $step)
 {
     global $db;
@@ -1014,6 +1022,70 @@ function setTitle($user_id, $PTitle)
     $query = "UPDATE products SET Title = '$PTitle' WHERE productId=$user_id";;
     $res = mysqli_query($db, $query);
     return $res;
+}
+
+function generate_membership_id()
+{
+    return "TOM-" . uniqid();
+}
+
+
+function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $selectedItem)
+{
+
+    $full_name = $first_name . $Last_name;
+    $selectedPrice = $selectedItem['price'];
+    $genId = generate_membership_id();
+    $genPassword = substr($genId, 0, 10);
+    $encryptePwd = password_hash($genPassword, PASSWORD_BCRYPT, ['cost' => 10]);
+
+
+    date_default_timezone_set('Africa/Addis_Ababa');
+    $currentDate = new DateTime();
+    $today  = $currentDate->format('Y-m-d H:i:s');
+    $expDate = $currentDate->modify('+6 months');
+
+
+    global $db;
+    $query = "SELECT * From membership WHERE telegramID=$user_id";;
+    $res = mysqli_query($db, $query);
+    $res2 = mysqli_fetch_assoc($res);
+
+    if (empty($res2)) {
+        $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, 	Signup_Date, Exp_date) VALUES ('$full_name', '$encryptePwd','$user_id', '$selectedPrice', '$today', '$expDate')";
+        $res = mysqli_query($db, $query);
+        if (!$res) {
+            die('query failed' . mysqli_error($db));
+        }
+        return true;
+    } else {
+
+        date_default_timezone_set('Africa/Addis_Ababa');
+        // Retrieve the expiredate from the database
+        $result = mysqli_query($db, "SELECT Exp_date FROM membership WHERE telegramID = $user_id");
+        $row = mysqli_fetch_assoc($result);
+        $expiredate = new DateTime($row['Exp_date']);
+
+        // Get the current date
+        $currentDate = new DateTime();
+
+        // Compare the expiredate with the current date
+        if ($currentDate > $expiredate) {
+            echo "The date has expired.";
+            $result = mysqli_query($db, "DELETE FROM membership WHERE telegramID = $user_id");
+            $row = mysqli_fetch_assoc($result);
+            $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, 	Signup_Date, Exp_date) VALUES ('$full_name', '$encryptePwd','$user_id', '$selectedPrice', '$today', '$expDate')";
+            $res = mysqli_query($db, $query);
+            if (!$res) {
+                die('query failed' . mysqli_error($db));
+            }
+            return true;
+        } else {
+            echo "The date has not expired.";
+            return false;
+        }
+
+    }
 }
 
 function adduser($first_name, $Last_name, $user_id, $product_Id, $MSGID, $selectedItem)

@@ -251,6 +251,23 @@ function showSubscriptionDetail($UIDS, $chat_id, $message_id, $selectedItem)
   $ret = message($chat_id, $detailText, $markupjs);
 }
 
+function showMembershipDetail($UIDS, $chat_id, $message_id, $selectedItem)
+{
+
+
+  $Ch_title = $selectedItem['Title'];
+  $Ch_quan = $selectedItem['size'];
+  $Ch_prc = $selectedItem['price'];
+  $Ch_amn = $selectedItem['subscription_period'];
+  $Ch_Update = "Membership Type";
+  $detailText = urlencode("\n\Membership: " . $Ch_title . "\n\n" . "Discount: " . $Ch_quan . "\n\n" . "Membership Total:" . $Ch_prc . "birr" . "\n\n"  . "Membership Period:" . $Ch_amn . "" . "\n\n");
+
+
+  $markup  = array('keyboard' => array(array('Next'), array('Go Back', 'Cancel')), 'resize_keyboard' => true, 'selective' => true, 'one_time_keyboard' => true);
+  $markupjs = json_encode($markup);
+  $ret = message($chat_id, $detailText, $markupjs);
+}
+
 function showTotalDetail($UIDS, $chat_id, $user_id)
 {
   global $db;
@@ -279,6 +296,13 @@ function showTotalDetail($UIDS, $chat_id, $user_id)
   $ret = message($chat_id, $detailText, null);
 }
 
+
+function DetailTextMem($chat_id)
+{
+  $markup  = array('keyboard' => array(array('Next'), array('Go Back', 'Cancel')), 'resize_keyboard' => true, 'selective' => true, 'one_time_keyboard' => true);
+  $markupjs = json_encode($markup);
+  $ret = message($chat_id, "💳  Membership Detail ዝርዝር ", $markupjs);
+}
 
 
 
