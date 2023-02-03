@@ -134,7 +134,7 @@ if ($user_id !== 5102867263) {
 
       $ID = intval($selectedItem);
       $selection = GetSelection($ID);
-      if ($selection['package_Type'] === 'MEB') {
+      if ($selection['package_Type'] == 'MEB') {
         $respo =  addMember($first_name, $Last_name, $user_id, $ID, $message_id, $selection);
         if ($respo) {
           setStepMem($user_id, "MembershipStart");

@@ -1060,7 +1060,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
         return true;
     } else {
 
-        date_default_timezone_set('Africa/Addis_Ababa');
+        
         // Retrieve the expiredate from the database
         $result = mysqli_query($db, "SELECT Exp_date FROM membership WHERE telegramID = $user_id");
         $row = mysqli_fetch_assoc($result);
@@ -1071,7 +1071,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
 
         // Compare the expiredate with the current date
         if ($currentDate > $expiredate) {
-            echo "The date has expired.";
+       
             $result = mysqli_query($db, "DELETE FROM membership WHERE telegramID = $user_id");
             $row = mysqli_fetch_assoc($result);
             $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, 	Signup_Date, Exp_date) VALUES ('$full_name', '$encryptePwd','$user_id', '$selectedPrice', '$today', '$expDate')";
@@ -1081,7 +1081,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
             }
             return true;
         } else {
-            echo "The date has not expired.";
+           
             return false;
         }
 
