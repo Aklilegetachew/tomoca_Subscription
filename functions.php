@@ -1043,8 +1043,8 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
     date_default_timezone_set('Africa/Addis_Ababa');
     $currentDate = new DateTime();
     $today  = $currentDate->format('Y-m-d H:i:s');
-    $expDate = $currentDate->modify('+6 months');
-
+    $exp = $currentDate->modify('+6 months');
+    $expDate = $exp->format('Y-m-d H:i:s');
 
     global $db;
     $query = "SELECT * From membership WHERE telegramID=$user_id";;
@@ -1052,7 +1052,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
     $res2 = mysqli_fetch_assoc($res);
 
     if (empty($res2)) {
-        $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, 	Signup_Date, Exp_date) VALUES ('$full_name', '$encryptePwd','$user_id', '$selectedPrice', $today, $expDate)";
+        $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, Signup_Date, Exp_date) VALUES ('$full_name', '$encryptePwd','$user_id', '$selectedPrice', $today, $expDate)";
         $res = mysqli_query($db, $query);
         if (!$res) {
             die('query failed' . mysqli_error($db));
@@ -1060,7 +1060,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
         return true;
     } else {
 
-        
+
         // Retrieve the expiredate from the database
         $result = mysqli_query($db, "SELECT Exp_date FROM membership WHERE telegramID = $user_id");
         $row = mysqli_fetch_assoc($result);
@@ -1071,7 +1071,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
 
         // Compare the expiredate with the current date
         if ($currentDate > $expiredate) {
-       
+
             $result = mysqli_query($db, "DELETE FROM membership WHERE telegramID = $user_id");
             $row = mysqli_fetch_assoc($result);
             $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, 	Signup_Date, Exp_date) VALUES ('$full_name', '$encryptePwd','$user_id', '$selectedPrice', '$today', '$expDate')";
@@ -1081,10 +1081,9 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
             }
             return true;
         } else {
-           
+
             return false;
         }
-
     }
 }
 
