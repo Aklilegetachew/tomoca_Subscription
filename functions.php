@@ -1052,7 +1052,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
     $res2 = mysqli_fetch_assoc($res);
 
     if (empty($res2)) {
-        $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, 	Signup_Date, Exp_date) VALUES ('$full_name', '$encryptePwd','$user_id', '$selectedPrice', '$today', '$expDate')";
+        $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, 	Signup_Date, Exp_date) VALUES ('$full_name', '$encryptePwd','$user_id', '$selectedPrice', $today, $expDate)";
         $res = mysqli_query($db, $query);
         if (!$res) {
             die('query failed' . mysqli_error($db));
