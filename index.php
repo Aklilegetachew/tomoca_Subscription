@@ -188,7 +188,8 @@ if ($user_id !== 5102867263 && $stepMem == "MembershipStart") {
 
 if ($Contact && $stepMem == "MemberFinal") {
   setphoneMem($user_id, $Contact);
-  
+  ChooseProviderMem($data);
+  setStepMem($user_id, "MembershipCheckout");
 } elseif ($text == "Back" && $stepMem == "MemberFinal") {
   $userIdDb = getUserIDMem($user_id);
   BackNotif($update);
@@ -199,7 +200,8 @@ if ($Contact && $stepMem == "MemberFinal") {
   message($chat_id, "Please insert Phone number! or cancel previous order", $markupjs);
 } elseif (is_numeric($text) && $stepMem == "MemberFinal") {
   setphoneMem($user_id, $text);
-  goto recape;
+  ChooseProviderMem($data);
+  setStepMem($user_id, "MembershipCheckout");
 } elseif ($text == "Cancel"  && $stepMem == "MemberFinal") {
   $userIdDb = getUserIDMem($user_id);
   $UserInfo = getUserInputMem($userIdDb);
