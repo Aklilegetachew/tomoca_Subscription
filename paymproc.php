@@ -189,13 +189,13 @@ function ChooseProviderPK($chat_id, $user_id)
 }
 
 
-function ChooseProviderMem($data)
+function ChooseProviderMem($chat_id, $user_id)
 {
   $userupdate = $GLOBALS['updated'];
-  $chat_id = $data['message']['chat']['id'];
-  $user_id = $data['message']['from']['id'];
-  $message_id = $data['message']['message_id'];
-  $message_idnum = intval($message_id) + 1;
+  // $chat_id = $data['message']['chat']['id'];
+  // $user_id = $data['message']['from']['id'];
+  // $message_id = $data['message']['message_id'];
+  // $message_idnum = intval($message_id) + 1;
 
   $UserId = getUserIDMem($user_id);
   $urlStr = base64_encode(urlencode($UserId));
