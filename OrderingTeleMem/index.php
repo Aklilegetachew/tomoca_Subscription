@@ -176,8 +176,7 @@ if ($UserInfo) : ?>
           action: 'cancel',
           userId: <?php echo $userId; ?>,
           userTgId: <?php echo $UserTgId ?>,
-          StartMsg: <?php echo $startMsg ?>,
-          endMsg: <?php echo $startMsg ?>
+   
         }).then(res => {
           window.location.replace('https://t.me/TomTomChan');
         }).then(() => {
