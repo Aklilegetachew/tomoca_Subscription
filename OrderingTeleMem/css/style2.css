@@ -1,0 +1,60 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background-image: url(./bg.jpg);
+  /* background-position: top right; */
+  background-size: cover;
+  background-blend-mode: darken;
+}
+
+.SmallCards {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+}
+
+.smallestcardsub {
+  background-color: whitesmoke;
+  border-radius: 15px;
+  width: fit-content;
+  padding: 10px;
+}
+
+.smallestcardsub h3 {
+  font-weight: 300;
+}
+
+.smallestcardsub p {
+  font-weight: 200;
+  font-size: 12pt;
+}
+
+.smallestcardsub button {
+  background-color: rgba(234,128,22,255);
+  color: white;
+  padding: 8px;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.butn-go {
+  display: flex;
+  margin: 10px;
+  align-items: flex-end;
+  justify-content: flex-end;
+}

@@ -1086,7 +1086,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
     $res2 = mysqli_fetch_assoc($res);
 
     if (empty($res2)) {
-        $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price) VALUES ('$full_name', '$encryptePwd','$user_id', '$selectedPrice')";
+        $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, product_Id) VALUES ('$full_name', '$encryptePwd','$user_id', '$selectedPrice', '$product_Id')";
         $res = mysqli_query($db, $query);
         if (!$res) {
             die('query failed' . mysqli_error($db));
@@ -1108,7 +1108,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
 
             $result = mysqli_query($db, "DELETE FROM membership WHERE telegramID = $user_id");
             $row = mysqli_fetch_assoc($result);
-            $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, 	Signup_Date, Exp_date) VALUES ('$full_name', '$encryptePwd','$user_id', '$selectedPrice', '$today', '$expDate')";
+            $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, product_Id) VALUES ('$full_name', '$encryptePwd','$user_id', '$selectedPrice', '$product_Id')";
             $res = mysqli_query($db, $query);
             if (!$res) {
                 die('query failed' . mysqli_error($db));

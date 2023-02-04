@@ -123,7 +123,7 @@ $date3 = DateTime::createFromFormat('h:i a', $sunset);
 
 
 if ($user_id !== 5102867263) {
-  if (strcmp($text, '/start') !== 0 && $step == null || $step == "Payed") {
+  if (strcmp($text, '/start') !== 0 && $stepMem == null || $step == null || $step == "Payed") {
     FirstBack:
     $selectedItem = null;
     $selectedItem = substr($text, 7);
@@ -184,10 +184,10 @@ if ($user_id !== 5102867263 && $stepMem == "MembershipStart") {
   }
 }
 
-// =============================== Membership settingphone number ================================
+// =============================== Membership setting phone number ================================
 
 if ($Contact && $stepMem == "MemberFinal") {
-  setphone($user_id, $Contact);
+  setphoneMem($user_id, $Contact);
   
 } elseif ($text == "Back" && $stepMem == "MemberFinal") {
   $userIdDb = getUserIDMem($user_id);
@@ -198,7 +198,7 @@ if ($Contact && $stepMem == "MemberFinal") {
   $markupjs = json_encode($markup);
   message($chat_id, "Please insert Phone number! or cancel previous order", $markupjs);
 } elseif (is_numeric($text) && $stepMem == "MemberFinal") {
-  setphone($user_id, $text);
+  setphoneMem($user_id, $text);
   goto recape;
 } elseif ($text == "Cancel"  && $stepMem == "MemberFinal") {
   $userIdDb = getUserIDMem($user_id);
