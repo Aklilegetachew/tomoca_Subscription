@@ -158,7 +158,7 @@ if ($UserInfo) : ?>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js"></script>
     <!-- <script src="./telebirr.js"></script> -->
-    <script>
+    <!-- <script>
       var today = new Date();
       var next_day = new Date();
       next_day.setDate(today.getDate() + 1);
@@ -167,7 +167,7 @@ if ($UserInfo) : ?>
         minDate: next_day,
         maxDate: new Date().fp_incr(8)
       });
-    </script>
+    </script> -->
     <script type="text/javascript">
       const cancel = document.querySelector('#btn-tb')
       cancel.addEventListener('click', async e => {
@@ -187,7 +187,7 @@ if ($UserInfo) : ?>
 
       const LocationVal = document.getElementById('LocationComment')
       const SubmitPay = document.querySelector('#submit')
-      const pickSubmitPay = document.querySelector('#Picksubmit')
+     
       var userAgent = window.navigator.userAgent.toLowerCase(),
         safari = /safari/.test(userAgent),
         ios = /iphone|ipod|ipad/.test(userAgent);
@@ -213,9 +213,8 @@ if ($UserInfo) : ?>
         e.preventDefault();
 
         const type = SubmitPay.dataset.order;
-        const pickedDates = datePicker.selectedDates[0];
-        const dateString = pickedDates.toISOString().substring(0, 10);
-        console.log(pickedDates);
+ 
+
         if (LocationVal.value == '') {
           console.log("null")
           alert("Dear Customer Please insert your Location Address And Delivery Date in the space provided. ")
