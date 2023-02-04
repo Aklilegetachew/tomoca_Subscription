@@ -24,7 +24,7 @@ if ($UserInfo) : ?>
   $UserTotalAmount = $UserInfo['total_price'];
   $UserProductID = $UserInfo['product_Id'];
 
-  $selectedItem = GetSelection(intval($ProductId));
+  $selectedItem = GetSelection(intval($UserProductID));
 
   $Ch_title = $selectedItem['Title'];
   $Ch_quan = $selectedItem['size'];
