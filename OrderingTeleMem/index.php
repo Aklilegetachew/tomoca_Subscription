@@ -63,35 +63,31 @@ if ($UserInfo) : ?>
       </header>
 
       <section class="subContainer">
-      
-          <div class="Card">
-            <div class="DelivHeader">
-              <h3 class="cardTitle">Membership Information</h3>
-              <img src="./images/eshi-express-removebg.png" class="Imglogo" alt="eshi express logo here" />
-            </div>
-            <div class="CardBody">
 
-              <div class="ListDiv">
-                <div class="divForm">
-                  <label class="labelForm" for="fname">First name:</label><br />
-                  <input type="text" name="fname" value=<?php echo $UserName; ?> readonly /><br />
-                </div>
-                <div class="divForm">
-                  <label class="labelForm" for="Phname">Phone Number:</label><br />
-                  <input type="text" name="Phname" value=<?php echo $UserPhoneNum; ?> readonly /><br />
-                </div>
-                <div class="divForm">
-                  <label class="labelForm" for="Phname">Location:</label><br />
-
-                </div>
-                <div class="divForm">
-                  <label class="labelForm" for="Markuparea">email:</label><br />
-                  <input type="text" id="LocationComment" name="Markuparea" rows="4" cols="50" placeholder="Please enter email address"></input>
-                </div>
-              </div>
-
-            </div>
+        <div class="Card">
+          <div class="DelivHeader">
+            <h3 class="cardTitle">Membership Information</h3>
+            <!-- <img src="./images/eshi-express-removebg.png" class="Imglogo" alt="eshi express logo here" /> -->
           </div>
+          <div class="CardBody">
+
+            <div class="ListDiv">
+              <div class="divForm">
+                <label class="labelForm" for="fname">First name:</label><br />
+                <input type="text" name="fname" value=<?php echo $UserName; ?> readonly /><br />
+              </div>
+              <div class="divForm">
+                <label class="labelForm" for="Phname">Phone Number:</label><br />
+                <input type="text" name="Phname" value=<?php echo $UserPhoneNum; ?> readonly /><br />
+              </div>
+              <div class="divForm">
+                <label class="labelForm" for="Markuparea">email:</label><br />
+                <input type="text" id="LocationComment" name="Markuparea" rows="4" cols="50" placeholder="Please enter email address"></input>
+              </div>
+            </div>
+
+          </div>
+        </div>
         <div class="Card">
           <h3 class="cardTitle">Membership Summary</h3>
           <div class="CardBody">
@@ -108,7 +104,7 @@ if ($UserInfo) : ?>
               </div>
               <div class='ProductCheck'>
                 <p>Duration Period</p>
-                <p> <?php echo $Ch_Roast;  ?></p>
+                <p><?php echo $Ch_Roast;  ?> Months</p>
               </div>
               <div class='ProductCheck'>
                 <p>Membership Price</p>
@@ -125,13 +121,9 @@ if ($UserInfo) : ?>
 
             <div class="subTotal">
               <div class='ProductCheck'>
-                <p>Subscription summary</p>
+                <p>Membership summary</p>
                 <p> <?php echo $ProductNum; ?> </p>
               </div>
-              <!-- <div class='ProductCheck'>
-                <p>Discount</p>
-                <p> 15%</p>
-              </div> -->
               <div class='ProductCheck'>
                 <p>Total Cost</p>
                 <p> <?php echo $Ch_amn; ?> ETB</p>
@@ -225,31 +217,30 @@ if ($UserInfo) : ?>
         const pickedDates = datePicker.selectedDates[0];
         const dateString = pickedDates.toISOString().substring(0, 10);
         console.log(pickedDates);
-          if (LocationVal.value == '' ) {
-            console.log("null")
-            alert("Dear Customer Please insert your Location Address And Delivery Date in the space provided. ")
-          } else {
-            // here 
-            $('#cover-spin').show(0)
-            await axios.post('Location.php', {
-              action: 'submitlocation',
-              comment: LocationVal.value,
-              selectedDate: dateString,
-              UID: <?php echo $userId ?>
-            }).then(async res => {
-              console.log(res)
-              // await axios.post('SUBMIT.php', {
-              //   action: 'submit',
-              //   Money: <?php echo $userId; ?>
-              // }).then(res => {
-              //   // to here
-              //   $("#cover-spin").hide();
-              //   let respo = JSON.parse(res.data)
-              //   window.location.href = respo.data.toPayUrl
-              // })
-            })
-          }
-       
+        if (LocationVal.value == '') {
+          console.log("null")
+          alert("Dear Customer Please insert your Location Address And Delivery Date in the space provided. ")
+        } else {
+          // here 
+          $('#cover-spin').show(0)
+          await axios.post('Location.php', {
+            action: 'submitemail',
+            comment: LocationVal.value,
+            UID: <?php echo $userId; ?>
+          }).then(async res => {
+            console.log(res)
+            // await axios.post('SUBMIT.php', {
+            //   action: 'submit',
+            //   Money: <?php echo $userId; ?>
+            // }).then(res => {
+            //   // to here
+            //   $("#cover-spin").hide();
+            //   let respo = JSON.parse(res.data)
+            //   window.location.href = respo.data.toPayUrl
+            // })
+          })
+        }
+
       })
     </script>
   </body>

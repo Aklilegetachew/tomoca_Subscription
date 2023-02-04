@@ -1352,6 +1352,16 @@ function setLocationComment($comment, $SelectedDate, $UID)
     return $res;
 }
 
+function emailUpdater($comment, $UID)
+{
+
+
+    global $db;
+    $query = "UPDATE membership SET email = '$comment' WHERE id=$UID";;
+    $res = mysqli_query($db, $query);
+    return $res;
+}
+
 function setDatePicker($SelectedDate, $UID)
 {
     $date = new DateTime($SelectedDate, new DateTimeZone('UTC'));
