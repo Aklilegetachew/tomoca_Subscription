@@ -123,9 +123,9 @@ if (strpos($output, 'M') !== false) {
 	$userId = preg_replace('/[^0-9]/', '', $output);
 	$UserInfos = getUserInputMem($userId);
 	$OrderType = "Membership";
-	$UserTgId = $UserInfo['telegramID'];
-	$userNames = $UserInfo['member_name'];
-	$password = $UserInfo['member_GenPassword'];
+	$UserTgId = $UserInfos['telegramID'];
+	$userNames = $UserInfos['member_name'];
+	$password = $UserInfos['member_GenPassword'];
 } else {
 	$userId = $output;
 	$UserInfo = getUserInput($userId);
