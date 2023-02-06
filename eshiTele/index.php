@@ -154,6 +154,7 @@ if ($OrderType == "Pickup Order") {
 } elseif ($OrderType == "Membership") {
 	// $respo = makeApiSignup($UserInfos);
 	// Get the current date in the format 'Y-m-d'
+	echo "Here.." . $OrderType;
 	date_default_timezone_set("Africa/Addis_Ababa");
 	$MembershipDate = date('Y-m-d');
 
