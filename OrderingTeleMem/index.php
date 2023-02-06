@@ -73,8 +73,12 @@ if ($UserInfo) : ?>
 
             <div class="ListDiv">
               <div class="divForm">
-                <label class="labelForm" for="fname">First name:</label><br />
+                <label class="labelForm" for="fname">User name:</label><br />
                 <input type="text" name="fname" value=<?php echo $UserName; ?> readonly /><br />
+              </div>
+              <div class="divForm">
+                <label class="labelForm" for="Markuparea">Full name:</label><br />
+                <input type="text" id="fullName" name="Markuparea" rows="4" cols="50" placeholder="Please enter full name"></input>
               </div>
               <div class="divForm">
                 <label class="labelForm" for="Phname">Phone Number:</label><br />
@@ -183,6 +187,7 @@ if ($UserInfo) : ?>
 
 
       const LocationVal = document.getElementById('LocationComment')
+      const fullName = document.getElementById('fullName')
       const SubmitPay = document.querySelector('#submit')
 
       var userAgent = window.navigator.userAgent.toLowerCase(),
@@ -212,17 +217,18 @@ if ($UserInfo) : ?>
         const type = SubmitPay.dataset.order;
         console.log(LocationVal.value);
 
-        if (LocationVal.value == '') {
+        if (LocationVal.value == '' || fullName.value == '') {
           console.log("null")
-          alert("Dear Customer Please insert your Location Address And Delivery Date in the space provided. ")
+          alert("Dear Customer Please insert your full name and email Address in the space provided. ")
         } else {
           // here 
           $('#cover-spin').show(0)
           await axios.post('Location.php', {
             action: 'submitemail',
             comment: LocationVal.value,
+            nameFull: fullName.value,
             UID: <?php echo $userId; ?>
-          }).then( async res => {
+          }).then(async res => {
             console.log(res)
             await axios.post('SUBMITMEM.php', {
               action: 'submit',

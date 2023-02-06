@@ -1071,7 +1071,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
     $selectedPrice = $selectedItem['price'];
     $genId = generate_membership_id();
     $genPassword = substr($genId, 0, 10);
-    $encryptePwd = password_hash($genPassword, PASSWORD_BCRYPT, ['cost' => 10]);
+    
 
 
     date_default_timezone_set('Africa/Addis_Ababa');
@@ -1086,7 +1086,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
     $res2 = mysqli_fetch_assoc($res);
 
     if (empty($res2)) {
-        $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, product_Id) VALUES ('$full_name', '$encryptePwd','$user_id', '$selectedPrice', '$product_Id')";
+        $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, product_Id) VALUES ('$full_name', '$genPassword','$user_id', '$selectedPrice', '$product_Id')";
         $res = mysqli_query($db, $query);
         if (!$res) {
             die('query failed' . mysqli_error($db));
@@ -1108,7 +1108,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
 
             $result = mysqli_query($db, "DELETE FROM membership WHERE telegramID = $user_id");
             $row = mysqli_fetch_assoc($result);
-            $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, product_Id) VALUES ('$full_name', '$encryptePwd','$user_id', '$selectedPrice', '$product_Id')";
+            $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, product_Id) VALUES ('$full_name', '$genPassword','$user_id', '$selectedPrice', '$product_Id')";
             $res = mysqli_query($db, $query);
             if (!$res) {
                 die('query failed' . mysqli_error($db));
@@ -1352,10 +1352,10 @@ function setLocationComment($comment, $SelectedDate, $UID)
     return $res;
 }
 
-function emailUpdater($comment, $UID)
+function emailUpdater($comment, $fullName,$UID)
 {
     global $db;
-    $query = "UPDATE membership SET email = '$comment' WHERE id=$UID";
+    $query = "UPDATE membership SET email = '$comment', full_name = '$fullName' WHERE id=$UID";
     $res = mysqli_query($db, $query);
     return $res;
 }

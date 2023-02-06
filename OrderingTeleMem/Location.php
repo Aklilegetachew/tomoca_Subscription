@@ -5,10 +5,10 @@ include '../paymproc.php';
 
 $received = json_decode(file_get_contents('php://input'));
 
-function emailSubmit($comment, $UID)
+function emailSubmit($comment, $nameFull,  $UID)
 {
-    
-    emailUpdater($comment, $UID);
+
+    emailUpdater($comment, $nameFull, $UID);
 }
 
 function CommentLitsener($comment, $selectedDate, $UID)
@@ -38,5 +38,5 @@ if ($received->action == 'submitDatePicker') {
 if ($received->action == 'submitemail') {
 
 
-    echo json_encode(emailSubmit($received->comment, $received->UID));
+    echo json_encode(emailSubmit($received->comment, $received->nameFull, $received->UID));
 }

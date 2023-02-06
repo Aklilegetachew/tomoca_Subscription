@@ -9,15 +9,54 @@ $content = file_get_contents('php://input');
 
 $publicKey = $_ENV['TELE_PUBLICKEY_PROD'];
 
+function makeApiSignupp($userInfo)
+{
 
+
+	$userName = $userInfo['member_name'];
+	$PhoneNumber = $userInfo['member_phone'];
+	$passwordGen = $userInfo['member_GenPassword'];
+	$total_price = $userInfo['total_price'];
+	$PickUpLocation = $userInfo['email'];
+
+	// API endpoint URL
+	$url = 'https://example.com/api/data';
+
+	// Data to be sent in the POST request
+	$data = [
+		'key1' => 'value1',
+		'key2' => 'value2',
+	];
+
+	// Initialize cURL
+	$ch = curl_init($url);
+
+	// Set cURL options
+	curl_setopt($ch, CURLOPT_POST, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+	// Execute the cURL request
+	$response = curl_exec($ch);
+
+	// Check for cURL errors
+	if (curl_errno($ch)) {
+		// Handle errors
+	}
+
+	// Close cURL session
+	curl_close($ch);
+
+	// Decode the JSON response
+	$result = json_decode($response, true);
+
+	// Use the result as needed
+
+}
 
 function returnid(array $CHARS)
 {
-	$IDfromUID = "";
-	for ($x = 10; $x < sizeof($CHARS); $x++) {
-		$IDfromUID .= $CHARS[$x];
-	}
-	return $IDfromUID;
+	return implode('', array_slice($CHARS, 10));
 }
 
 function decryptRSA($source, $key)
@@ -68,6 +107,47 @@ $Amount = $jsonnofityData['totalAmount'];
 $userId = returnid($tansactionchars);
 file_put_contents("Lemlem1.txt", $userId . PHP_EOL . PHP_EOL, FILE_APPEND);
 
+$output = implode('', array_slice(str_split($jsonnofityData['outTradeNo']), 10));
+
+if (strpos($output, 'M') !== false) {
+	echo "Output1 contains M";
+	$userId = preg_replace('/[^0-9]/', '', $output);
+	$UserInfos = getUserInputMem($userId);
+	$OrderType = "Membership";
+} else {
+	$userId = $output;
+	$UserInfo = getUserInput($userId);
+	$OrderType = $UserInfo['orderType'];
+	$UserTgId = $UserInfo['UserId'];
+	$MsgLast = $UserInfo['LastMsg'];
+	$MsgStart = $UserInfo['StartID'];
+	$PickUpLocation = $UserInfo['ShopLocation'];
+	$Fullname = $UserInfo['UserName'] . $UserInfo['LastName'];
+	$productId = $UserInfo['userProductid'];
+	$productInfo = getProductInfo($productId);
+	$selectedFirstDate = $UserInfo['selectedDate'];
+	$Userlocation = $UserInfo['location'];
+}
+
+
+
+if ($OrderType == "Pickup Order") {
+
+	SetCompletedPickup($UserInfo, $Amount, $orderNumber, $productInfo, "paid");
+	deleteMessage($UserTgId, $MsgLast, $MsgStart);
+	SendCompletedMsg($UserTgId, $userId, $orderNumber, $PickUpLocation, $selectedFirstDate);
+	SendNotificationMsg($UserInfo, 'New Subscription');
+} elseif ($OrderType == "Delivery Order") {
+	SetCompletedDelivery($UserInfo, $Amount, $orderNumber, $productInfo, "paid");
+	deleteMessage($UserTgId, $MsgLast, $MsgStart);
+	SendCompletedDelivery($UserTgId, $Userlocation, $orderNumber, $PickUpLocation, $selectedFirstDate);
+	SendNotificationMsg($UserInfo, 'New Subscription');
+} elseif ($OrderType == "Membership") {
+	$respo = makeApiSignupp($UserInfos);
+}
+
+
+// $output1 = implode('', $userId);
 // $UserInfo = getUserInput($userId);
 // $OrderType = $UserInfo['orderType'];
 // $UserTgId = $UserInfo['UserId'];
@@ -110,32 +190,3 @@ file_put_contents("Lemlem1.txt", $userId . PHP_EOL . PHP_EOL, FILE_APPEND);
 // }
 
 // this is the subsceription edit 
-
-$UserInfo = getUserInput($userId);
-$OrderType = $UserInfo['orderType'];
-$UserTgId = $UserInfo['UserId'];
-$MsgLast = $UserInfo['LastMsg'];
-$MsgStart = $UserInfo['StartID'];
-$PickUpLocation = $UserInfo['ShopLocation'];
-$Fullname = $UserInfo['UserName'] . $UserInfo['LastName'];
-$productId = $UserInfo['userProductid'];
-$productInfo = getProductInfo($productId);
-$selectedFirstDate = $UserInfo['selectedDate'];
-$Userlocation = $UserInfo['location'];
-
-if ($OrderType == "Pickup Order") {
-
-	SetCompletedPickup($UserInfo, $Amount, $orderNumber, $productInfo, "paid");
-	deleteMessage($UserTgId, $MsgLast, $MsgStart);
-	SendCompletedMsg($UserTgId, $userId, $orderNumber, $PickUpLocation, $selectedFirstDate);
-	SendNotificationMsg($UserInfo, 'New Subscription');
-	
-} elseif ($OrderType == "Delivery Order") {
-	SetCompletedDelivery($UserInfo, $Amount, $orderNumber, $productInfo, "paid");
-	deleteMessage($UserTgId, $MsgLast, $MsgStart);
-	SendCompletedDelivery($UserTgId, $Userlocation, $orderNumber, $PickUpLocation, $selectedFirstDate);
-	SendNotificationMsg($UserInfo, 'New Subscription');
-} elseif ($OrderType == "Membership") {
-
-
-}
