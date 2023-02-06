@@ -81,7 +81,7 @@ function cancelLitsener($Money)
 
     $appKey = $_ENV['TELE_APPKEY_PROD'];;
     $data = [
-        'outTradeNo' => getName(10) . $Money,
+        'outTradeNo' => getName(10) . $Money . "M",
         'subject' => 'coffee',
         'totalAmount' => $UserTotalAmount,
         'shortCode' =>  $_ENV['TELE_SHORTCODE_PROD'],
