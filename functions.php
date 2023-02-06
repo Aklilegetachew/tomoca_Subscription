@@ -1354,10 +1354,8 @@ function setLocationComment($comment, $SelectedDate, $UID)
 
 function emailUpdater($comment, $UID)
 {
-
-
     global $db;
-    $query = "UPDATE membership SET email = '$comment' WHERE id=$UID";;
+    $query = "UPDATE membership SET email = '$comment' WHERE id=$UID";
     $res = mysqli_query($db, $query);
     return $res;
 }

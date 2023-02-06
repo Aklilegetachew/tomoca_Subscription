@@ -139,9 +139,6 @@ if ($UserInfo) : ?>
 
         </div>
 
-
-
-
         <ul class="social">
           <li>
             <a href="https://www.facebook.com/CaffeTomoca/"><img src="https://i.ibb.co/x7P24fL/facebook.png" /></a>
@@ -176,7 +173,7 @@ if ($UserInfo) : ?>
           action: 'cancel',
           userId: <?php echo $userId; ?>,
           userTgId: <?php echo $UserTgId ?>,
-   
+
         }).then(res => {
           window.location.replace('https://t.me/TomTomChan');
         }).then(() => {
@@ -187,7 +184,7 @@ if ($UserInfo) : ?>
 
       const LocationVal = document.getElementById('LocationComment')
       const SubmitPay = document.querySelector('#submit')
-     
+
       var userAgent = window.navigator.userAgent.toLowerCase(),
         safari = /safari/.test(userAgent),
         ios = /iphone|ipod|ipad/.test(userAgent);
@@ -213,7 +210,7 @@ if ($UserInfo) : ?>
         e.preventDefault();
 
         const type = SubmitPay.dataset.order;
- 
+        console.log(LocationVal.value);
 
         if (LocationVal.value == '') {
           console.log("null")
@@ -225,17 +222,17 @@ if ($UserInfo) : ?>
             action: 'submitemail',
             comment: LocationVal.value,
             UID: <?php echo $userId; ?>
-          }).then(async res => {
+          }).then( async res => {
             console.log(res)
-            // await axios.post('SUBMIT.php', {
-            //   action: 'submit',
-            //   Money: <?php echo $userId; ?>
-            // }).then(res => {
-            //   // to here
-            //   $("#cover-spin").hide();
-            //   let respo = JSON.parse(res.data)
-            //   window.location.href = respo.data.toPayUrl
-            // })
+            await axios.post('SUBMIT.php', {
+              action: 'submit',
+              Money: <?php echo $userId; ?>
+            }).then(res => {
+              // to here
+              $("#cover-spin").hide();
+              let respo = JSON.parse(res.data)
+              window.location.href = respo.data.toPayUrl
+            })
           })
         }
 

@@ -209,11 +209,6 @@ if ($Contact && $stepMem == "MemberFinal") {
   DeletRequestMem($userIdDb);
 }
 
-
-
-
-
-
 // ===================== detail response  =========================
 
 if ($user_id !== 5102867263 && $step == "SubscriptionStart") {
