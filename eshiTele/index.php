@@ -98,22 +98,24 @@ $pusher = new Pusher\Pusher(
 
 
 
-$nofityData = decryptRSA($content, $publicKey);
-$jsonnofityData = json_decode($nofityData, true);
-file_put_contents("Lemlem.txt", $jsonnofityData['outTradeNo'] . PHP_EOL . PHP_EOL, FILE_APPEND);
-echo '{"code":0,"msg":"success"}';
+// $nofityData = decryptRSA($content, $publicKey);
+// $jsonnofityData = json_decode($nofityData, true);
+// file_put_contents("Lemlem.txt", $jsonnofityData['outTradeNo'] . PHP_EOL . PHP_EOL, FILE_APPEND);
+// echo '{"code":0,"msg":"success"}';
 
-$tansactionchars = str_split($jsonnofityData['outTradeNo']);
-$orderNumber = $jsonnofityData['transactionNo'];
-$Amount = $jsonnofityData['totalAmount'];
+// $tansactionchars = str_split($jsonnofityData['outTradeNo']);
+// $orderNumber = $jsonnofityData['transactionNo'];
+// $Amount = $jsonnofityData['totalAmount'];
 
 
-$jsonnofityData['outTradeNo'] = "jsif77jf8M";
-
+$jsonnofityData = "jsif77jf8M";
+var_dump($jsonnofityData);
 // $userId = returnid($tansactionchars);
 file_put_contents("Lemlem1.txt", $userId . PHP_EOL . PHP_EOL, FILE_APPEND);
 
-$output = implode('', array_slice(str_split($jsonnofityData['outTradeNo']), 10));
+$output = implode('', array_slice(str_split($jsonnofityData), 10));
+
+// $output = implode('', array_slice(str_split($jsonnofityData['outTradeNo']), 10));
 
 if (strpos($output, 'M') !== false) {
 	echo "Output1 contains M";
