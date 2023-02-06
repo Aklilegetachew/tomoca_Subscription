@@ -9,7 +9,7 @@ $content = file_get_contents('php://input');
 
 $publicKey = $_ENV['TELE_PUBLICKEY_PROD'];
 
-function makeApiSignupp($userInfo)
+function makeApiSignup($userInfo)
 {
 
 
@@ -17,15 +17,19 @@ function makeApiSignupp($userInfo)
 	$PhoneNumber = $userInfo['member_phone'];
 	$passwordGen = $userInfo['member_GenPassword'];
 	$total_price = $userInfo['total_price'];
-	$PickUpLocation = $userInfo['email'];
+	$emails = $userInfo['email'];
+	$fullName = $userInfo['full_name'];
 
 	// API endpoint URL
 	$url = 'https://example.com/api/data';
 
 	// Data to be sent in the POST request
 	$data = [
-		'key1' => 'value1',
-		'key2' => 'value2',
+		'userName' => $userName,
+		'email' => $emails,
+		'fullName' => $fullName,
+		'phoneNumber' => $PhoneNumber,
+		'password' => $passwordGen
 	];
 
 	// Initialize cURL
@@ -104,7 +108,9 @@ $orderNumber = $jsonnofityData['transactionNo'];
 $Amount = $jsonnofityData['totalAmount'];
 
 
-$userId = returnid($tansactionchars);
+$jsonnofityData['outTradeNo'] = "jsif77jf8M";
+
+// $userId = returnid($tansactionchars);
 file_put_contents("Lemlem1.txt", $userId . PHP_EOL . PHP_EOL, FILE_APPEND);
 
 $output = implode('', array_slice(str_split($jsonnofityData['outTradeNo']), 10));
@@ -114,6 +120,9 @@ if (strpos($output, 'M') !== false) {
 	$userId = preg_replace('/[^0-9]/', '', $output);
 	$UserInfos = getUserInputMem($userId);
 	$OrderType = "Membership";
+	$UserTgId = $UserInfo['telegramID'];
+	$userNames = $UserInfo['member_name'];
+	$password = $UserInfo['member_GenPassword'];
 } else {
 	$userId = $output;
 	$UserInfo = getUserInput($userId);
@@ -143,7 +152,16 @@ if ($OrderType == "Pickup Order") {
 	SendCompletedDelivery($UserTgId, $Userlocation, $orderNumber, $PickUpLocation, $selectedFirstDate);
 	SendNotificationMsg($UserInfo, 'New Subscription');
 } elseif ($OrderType == "Membership") {
-	$respo = makeApiSignupp($UserInfos);
+	// $respo = makeApiSignup($UserInfos);
+	// Get the current date in the format 'Y-m-d'
+	date_default_timezone_set("Africa/Addis_Ababa");
+	$MembershipDate = date('Y-m-d');
+
+	// Add one year to the current date to get the expiration date
+	$expirationDate = date('Y-m-d', strtotime('+1 year'));
+	setMemberCompleted($userId, $MembershipDate, $expirationDate);
+	SendCompletedMembership($UserTgId, $userNames, $orderNumber, $MembershipDate, $password, $expirationDate);
+	// SendNotificationMsg($UserInfo, 'New Membership');
 }
 
 

@@ -704,6 +704,14 @@ function SendCompletedDelivery($UserTgId, $Userlocation, $reqtransaction_id, $MS
     message($UserTgId, $detailText);
 }
 
+function SendCompletedMembership($UserTgId, $userNames, $reqtransaction_id, $MembDate, $Passwords, $ExpDate)
+{
+    $detailText = urlencode("
+    ✅ successfully enrolled as a member\n\nOrder Number:" . $reqtransaction_id  . "\n\nApp user name:" . $userNames . "\n\nApp temporary password:" . $Passwords . "\n\nMembership date: " . $MembDate . "\n\n" . "\n\n Expire date: " . $ExpDate . "\n\n" . "We appreciate you being a Member. " . "\n\n");
+
+    message($UserTgId, $detailText);
+}
+
 
 function SendCompletedMsgDelivery($UserTgId, $userId, $reqtransaction_id, $DeliveryLink, $jobID)
 {
@@ -732,13 +740,21 @@ function SendNotificationMsg($UserInfo, $msg)
     // $ShopLocationText = "TO.MO.CA. " . $MSG;
 
     $detailText = urlencode("
-    🔔" . $msg . "\n\nCustomer Name:" . $Fullname  . "\n\nPhone Number:" . $phoneNumber . "\n\nTotal Amount:" . $TotalAmount . "\n\nShop Location:" . $shopLocation . "\n\n");
+    🔔" . $msg . "\n\nCustomer Name:" . $Fullname  . "\n\nPhone Number:" . $phoneNumber . "\n\nTotal Amount:" . $TotalAmount . "ETB" . "\n\n");
 
     message(5102867263, $detailText);
 
     // $Lat = floatval($ShopInfo['Lat']);
     // $longt = floatval($ShopInfo['Longt']);
     // senLocationMsg($UserTgId, $Lat, $longt);
+}
+
+function setMemberCompleted($UID, $curDate, $ExpDate)
+{
+    global $db;
+    $query = "UPDATE membership SET Signup_Date = '$curDate', Exp_date = '$ExpDate', step = 'MEMBER'  WHERE id=$UID";;
+    $res = mysqli_query($db, $query);
+    return $res;
 }
 
 
@@ -1071,7 +1087,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
     $selectedPrice = $selectedItem['price'];
     $genId = generate_membership_id();
     $genPassword = substr($genId, 0, 10);
-    
+
 
 
     date_default_timezone_set('Africa/Addis_Ababa');
@@ -1352,7 +1368,7 @@ function setLocationComment($comment, $SelectedDate, $UID)
     return $res;
 }
 
-function emailUpdater($comment, $fullName,$UID)
+function emailUpdater($comment, $fullName, $UID)
 {
     global $db;
     $query = "UPDATE membership SET email = '$comment', full_name = '$fullName' WHERE id=$UID";
