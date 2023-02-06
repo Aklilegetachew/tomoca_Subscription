@@ -109,12 +109,13 @@ $pusher = new Pusher\Pusher(
 
 
 $jsonnofityData = "jsif77jf8M";
-var_dump($jsonnofityData);
+
 // $userId = returnid($tansactionchars);
 file_put_contents("Lemlem1.txt", $userId . PHP_EOL . PHP_EOL, FILE_APPEND);
 
 $output = implode('', array_slice(str_split($jsonnofityData), 10));
 
+var_dump($output);
 // $output = implode('', array_slice(str_split($jsonnofityData['outTradeNo']), 10));
 
 if (strpos($output, 'M') !== false) {
