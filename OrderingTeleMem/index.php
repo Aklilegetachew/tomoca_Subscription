@@ -224,7 +224,7 @@ if ($UserInfo) : ?>
             UID: <?php echo $userId; ?>
           }).then( async res => {
             console.log(res)
-            await axios.post('SUBMIT.php', {
+            await axios.post('SUBMITMEM.php', {
               action: 'submit',
               Money: <?php echo $userId; ?>
             }).then(res => {
