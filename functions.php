@@ -581,6 +581,24 @@ function getUserInputMem($UserID)
     return $respo;
 }
 
+function checkMembership($UserID)
+{
+    global $db;
+    $query = "SELECT * FROM membership WHERE id=$UserID AND step = 'MEMBER'";;
+    $result = mysqli_query($db, $query);
+
+
+    if (mysqli_num_rows($result) > 0) {
+        // The record exists
+        return false;
+        echo "The record exists.";
+    } else {
+        return true;
+        // The record does not exist
+        echo "The record does not exist.";
+    }
+}
+
 function getProductInfo($PID)
 {
     global $db;

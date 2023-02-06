@@ -121,11 +121,16 @@ var_dump($output);
 if (strpos($output, 'M') !== false) {
 	echo "Output1 contains M";
 	$userId = preg_replace('/[^0-9]/', '', $output);
-	$UserInfos = getUserInputMem($userId);
-	$OrderType = "Membership";
-	$UserTgId = $UserInfos['telegramID'];
-	$userNames = $UserInfos['member_name'];
-	$password = $UserInfos['member_GenPassword'];
+	$check = checkMembership($userId);
+	if ($check) {
+		$UserInfos = getUserInputMem($userId);
+		$OrderType = "Membership";
+		$UserTgId = $UserInfos['telegramID'];
+		$userNames = $UserInfos['member_name'];
+		$password = $UserInfos['member_GenPassword'];
+	} else {
+		$OrderType = "AgainRep";
+	}
 } else {
 	$userId = $output;
 	$UserInfo = getUserInput($userId);
@@ -166,6 +171,8 @@ if ($OrderType == "Pickup Order") {
 	setMemberCompleted($userId, $MembershipDate, $expirationDate);
 	SendCompletedMembership($UserTgId, $userNames, $orderNumber, $MembershipDate, $password, $expirationDate);
 	// SendNotificationMsg($UserInfo, 'New Membership');
+} elseif ($OrderType == 'AgainRep') {
+	echo '"msg":"success"';
 }
 
 
