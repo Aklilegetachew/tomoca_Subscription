@@ -427,13 +427,6 @@
             },
             table(row) {
                 var tables = $('#dataTableSubscribes').DataTable({
-                    // destroy: true,
-                    // dom: 'lBfrtip',
-                    // buttons: [
-                    //     'excel',
-                    //     'print',
-                    //     'csv'
-                    // ],
 
                     data: row,
                     columns: [{
@@ -514,6 +507,121 @@
 
     }).mount("#TableSubscribers")
 </script>
+
+<!-- ============================= Upcoming Orders ======================================================= -->
+
+<script>
+    const upcomming = Vue.createApp({
+
+        data() {
+            return {
+                newRow: []
+            }
+        },
+        methods: {
+            fetchTableRow() {
+                axios.post('./Componets/fetchTable.php', {
+                    action: "upcomingOrders"
+                }).then(res => {
+                    this.newRow = res.data
+                    console.log(res.data);
+                    this.table(res.data)
+                })
+            },
+
+            CartView(Id, Mode) {
+                console.log("hey");
+                urlcart = "subDetail.php?ID=" + Id
+                window.location.href = urlcart
+            },
+            table(row) {
+                var tables = $('#dataTableUpcomming').DataTable({
+
+                    data: row,
+                    columns: [{
+                            data: 'sub_name'
+                        },
+                        {
+                            data: 'sub_phone'
+                        },
+                        {
+                            data: 'sub_startingDate'
+                        },
+                        {
+                            data: 'sub_endDate'
+                        },
+                        {
+                            data: 'next_orderDate'
+                        },
+                        {
+                            data: 'orderType'
+                        },
+                        {
+                            data: 'payment_status'
+                        },
+                        {
+                            data: 'id',
+                            render: function(data) {
+
+                                return `<a  id="cart" data-id="${data}" class="btn btn-success btn-icon-split">
+                                         <span class="icon text-white-50">
+                                             <i class="fas fa-shopping-cart"></i>
+                                         </span>
+                                         <span class="text">Detail</span>
+                                     </a>`
+                            }
+                        }
+                    ],
+                });
+
+
+
+
+                let vm = this
+
+                $(document).on('click', '#cart', function() {
+
+                    let ids = $(this).data("id")
+                    console.log(ids);
+                    vm.CartView(ids, 'pik')
+
+                })
+
+            },
+
+        },
+
+        created() {
+            this.fetchTableRow()
+            var pusher = new Pusher('e5fe60b6bb6d56b8b93e', {
+                cluster: 'us2',
+                encrypted: true
+            });
+
+            var channel = pusher.subscribe('my-channel');
+            channel.bind('my-event', async (data) => {
+                this.fetchTableRow()
+
+            });
+
+            var channel2 = pusher.subscribe('my-channel');
+            channel2.bind('my-eventConfirm', async (data) => {
+                this.fetchTableRow()
+
+            });
+
+
+        }
+
+
+    }).mount("#TableUpComming")
+</script>
+
+
+
+
+
+
 
 <!-- ============================= Pick UP =============================== -->
 

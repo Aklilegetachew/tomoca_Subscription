@@ -27,6 +27,26 @@ if ($received->action === "allSubscribers") {
 }
 
 
+if ($received->action === "upcomingOrders") {
+
+    if ($user === 'Central') {
+
+        $query = "SELECT * FROM subscriptionlist WHERE sub_startingDate BETWEEN DATE_SUB(NOW(), INTERVAL DAYOFWEEK(NOW())-1 DAY) AND DATE_ADD(DATE_SUB(NOW(), INTERVAL DAYOFWEEK(NOW())-1 DAY), INTERVAL 7 DAY)";
+    } else {
+        $query = "SELECT * FROM subscriptionlist WHERE sub_startingDate BETWEEN DATE_SUB(NOW(), INTERVAL DAYOFWEEK(NOW())-1 DAY) AND DATE_ADD(DATE_SUB(NOW(), INTERVAL DAYOFWEEK(NOW())-1 DAY), INTERVAL 7 DAY) AND ShopLocation = $user";
+    }
+
+    $res = mysqli_query($connection, $query);
+
+    while ($res2 = mysqli_fetch_assoc($res)) {
+
+        array_push($Inout, $res2);
+    }
+
+    echo json_encode($Inout);
+}
+
+
 if ($received->action === "all") {
 
     if ($user === 'Central') {
