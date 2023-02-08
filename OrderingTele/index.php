@@ -114,6 +114,10 @@ if ($UserInfo) : ?>
                   <label class="labelForm" for="Markuparea">Delivery Comment:</label><br />
                   <textarea id="LocationComment" name="Markuparea" rows="4" cols="50" placeholder="Please enter location detail"></textarea>
                 </div>
+                <div class="divForm">
+                  <label class="labelForm" for="cars">Schedule Pickup date:</label>
+                  <input type="text" id="date-picker">
+                </div>
               </div>
 
             </div>
@@ -161,7 +165,7 @@ if ($UserInfo) : ?>
               </div>
               <div class='ProductCheck'>
                 <p>Duration Period</p>
-                <p> <?php echo $Ch_Roast;  ?></p>
+                <p> <?php echo $Ch_Roast;  ?> Months</p>
               </div>
               <div class='ProductCheck'>
                 <p>Total Size</p>
