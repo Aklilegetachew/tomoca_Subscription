@@ -13,17 +13,16 @@ function getName($n)
   return $randomString;
 }
 
-function Eshiservice($userId, $UserInfo)
+function Eshiservice($UserInfo)
 {
-  $UserTgId = $UserInfo['UserId'];
-  $UserPhoneNum = $UserInfo['PhoneNum'];
 
-  $UserName = $UserInfo['UserName'];
-  $LastName = $UserInfo['LastName'];
-  $userFullName = $UserName .  $LastName;
+  $UserPhoneNum = $UserInfo['sub_phone'];
+
+  $userFullName = $UserInfo['sub_name'];
+
   $UserLati = $UserInfo['lat'];
-  $UserLong = $UserInfo['longtiud'];
-  $LocationComment = $UserInfo['location'];
+  $UserLong = $UserInfo['longt'];
+  $LocationComment = $UserInfo['localtion'];
   $ShopLocation = $UserInfo['ShopLocation'];
 
   $response = GetShopLocation($ShopLocation);
@@ -32,18 +31,8 @@ function Eshiservice($userId, $UserInfo)
   $ShopAdress = $response['Location'];
   $ShopPhone = $response['PhoneNumber'];
 
-  $UserOrderType = $UserInfo['orderType'];
-  $startMsg = $UserInfo['StartID'];
-  $LastMsg = $UserInfo['LastMsg'];
-  $CartStart = intval($UserInfo['CartStart']);
-  $CartEnd = intval($UserInfo['CartEnd']);
   $ProductNum = $UserInfo['NumProducts'];
-  $dateIn = date("Y-m-d H:i:s");
-  $time = date("h:i:s");
   $Todaydate = date("Y-m-d H:i:s");
-  // $date = date_create("$Todaydate");
-  // date_add($date, date_interval_create_from_date_string("2 days"));
-  // $NextDay = date_format($date, "Y-m-d H:i:s");
   $expressTime = date("Y-m-d H:i:s", strtotime('+1:30 hours'));
 
   $ch = curl_init();

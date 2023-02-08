@@ -111,7 +111,7 @@ if (isset($_POST['create_post'])) {
                                                     <option value="1">Per Week</option>
                                                     <option value="2">Bi-Weekly</option>
                                                     <option value="3">Monthly</option>
-                                                    <option value="3">Life Time</option>
+                                                    <option value="4">Life Time</option>
                                                 </select>
                                             </div>
 

@@ -226,6 +226,49 @@ function appendQuantity($text, $user_id)
     return $res;
 }
 
+function makePickupOrder($data)
+{
+    global $connection;
+    $FirstName = $data['sub_name'];
+    $phoneNumber = $data['sub_phone'];
+    $productID = $data['product_id'];
+    $totalAmn = $data['payment_Total'];
+    $tnxNumber = $data['transaction_number'];
+    $shopLocation = $data['ShopLocation'];
+    $UserId = $data['telegramId'];
+
+
+
+    $query = "INSERT INTO pickuppayed(UserID, FirstName, LastName, NumProduct, TotalAmount, TransactionID, PhoneNumber, ShopLocation, Pickstatus, product_id)
+    VALUES ('$UserId', '$FirstName', '$FirstName', '$productID', '$totalAmn', '$tnxNumber', '$phoneNumber', '$shopLocation', 'NEW', '$productID')";
+    $res = mysqli_query($connection, $query);
+    return $res;
+}
+
+
+function makeDeliveryOrder($data, $PickUpLink, $deliveryLink, $jobId)
+{
+    global $connection;
+    $FirstName = $data['sub_name'];
+    $phoneNumber = $data['sub_phone'];
+    $productID = $data['product_id'];
+    $totalAmn = $data['payment_Total'];
+    $tnxNumber = $data['transaction_number'];
+    $shopLocation = $data['ShopLocation'];
+    $UserId = $data['telegramId'];
+    $userLocation = $data['localtion'];
+    $tin_num = $data['tin_num'];
+    $tin_name = $data['tin_name'];
+
+    $today = new DateTime();
+
+
+    $query = "INSERT INTO deliveryorders(FirstName, LastName, PhoneNumber, OrderNumber, Total, Status, ShopLocation, TinName, TinNumber, orderDate, orderTime, DeliveryID, DeliveryUrl)
+    VALUES ('$FirstName', '$FirstName', '$phoneNumber', '$tnxNumber', '$totalAmn', 'NEW', '$shopLocation', '$tin_name', '$tin_num' ,'$today', '$today', '$jobId', '$deliveryLink')";
+    $res = mysqli_query($connection, $query);
+    return $res;
+}
+
 
 
 function setqunti($user_id, $quan, $price, $cartId, $productID, $chat_id, $message_id)
@@ -392,11 +435,12 @@ function SetCompletedPickup($UserInfo, $auth_amount, $transactionID, $ProductInf
     $monthsToAdd = number_format($sub_Month);
     $UserTgId = $UserInfo['UserId'];
     date_default_timezone_set("Africa/Addis_Ababa");
-    $currentDate = new DateTime();
-    $newDate = $currentDate->modify("+$monthsToAdd months");
-    $newDateString = $newDate->format('Y-m-d');
+    $currentDate = date('Y-m-d');
+    $expirationDate = date('Y-m-d', strtotime("+$monthsToAdd months"));
+    // $newDate = $currentDate->modify("+$monthsToAdd months");
+    // $newDateString = $newDate->format('Y-m-d');
 
-    $query = "INSERT INTO subscriptionlist(sub_name, sub_phone, sub_startingDate, sub_endDate, next_orderDate, orderType, product_id, payment_Total, payment_status, transaction_number, ShopLocation, sub_status, telegramId) VALUES ('$UserName', '$PhoneNum', '$currentDate', '$newDateString', '$selectedFirstDate', '$orderType', '$productId', '$auth_amount', '$Payment', '$transactionID', '$ShopLocation', 'Online', '$UserTgId')";
+    $query = "INSERT INTO subscriptionlist(sub_name, sub_phone, sub_startingDate, sub_endDate, next_orderDate, orderType, product_id, payment_Total, payment_status, transaction_number, ShopLocation, sub_status, telegramId) VALUES ('$UserName', '$PhoneNum', '$currentDate', '$expirationDate', '$selectedFirstDate', '$orderType', '$productId', '$auth_amount', '$Payment', '$transactionID', '$ShopLocation', 'Online', '$UserTgId')";
     $res = mysqli_query($db, $query);
     if (!$res) {
         die('query failed' . mysqli_error($db));
@@ -421,15 +465,14 @@ function SetCompletedDelivery($UserInfo, $auth_amount, $transactionID, $ProductI
     $monthsToAdd = number_format($sub_Month);
     $UserTgId = $UserInfo['UserId'];
     date_default_timezone_set("Africa/Addis_Ababa");
-    $currentDate = new DateTime();
-    $newDate = $currentDate->modify("+$monthsToAdd months");
-    $newDateString = $newDate->format('Y-m-d');
+    $currentDate = date('Y-m-d');
+    $expirationDate = date('Y-m-d', strtotime("+$monthsToAdd months"));
     $lat = $UserInfo["lat"];
     $longtidue = $UserInfo["longtiud"];
     $location = $UserInfo["location"];
 
 
-    $query = "INSERT INTO subscriptionlist(sub_name, sub_phone, sub_startingDate, sub_endDate, next_orderDate, orderType, product_id, payment_Total, payment_status, transaction_number, ShopLocation, sub_status, telegramId, tin_num, tin_name, longt, lat, localtion) VALUES ('$UserName', '$PhoneNum', '$currentDate', '$newDateString', '$selectedFirstDate', '$orderType', '$productId', '$auth_amount', '$Payment', '$transactionID', '$ShopLocation', 'Online', '$UserTgId', '$TinNumber', '$BusinessName' , '$longtidue', '$lat', '$location')";
+    $query = "INSERT INTO subscriptionlist(sub_name, sub_phone, sub_startingDate, sub_endDate, next_orderDate, orderType, product_id, payment_Total, payment_status, transaction_number, ShopLocation, sub_status, telegramId, tin_num, tin_name, longt, lat, localtion) VALUES ('$UserName', '$PhoneNum', '$currentDate', '$expirationDate', '$selectedFirstDate', '$orderType', '$productId', '$auth_amount', '$Payment', '$transactionID', '$ShopLocation', 'Online', '$UserTgId', '$TinNumber', '$BusinessName' , '$longtidue', '$lat', '$location')";
     $res = mysqli_query($db, $query);
     if (!$res) {
         die('query failed' . mysqli_error($db));
@@ -731,7 +774,7 @@ function SendCompletedMembership($UserTgId, $userNames, $reqtransaction_id, $Mem
 }
 
 
-function SendCompletedMsgDelivery($UserTgId, $userId, $reqtransaction_id, $DeliveryLink, $jobID)
+function SendCompletedMsgDelivery($UserTgId, $reqtransaction_id, $DeliveryLink, $jobID)
 {
 
     $detailText = urlencode("
@@ -766,6 +809,97 @@ function SendNotificationMsg($UserInfo, $msg)
     // $longt = floatval($ShopInfo['Longt']);
     // senLocationMsg($UserTgId, $Lat, $longt);
 }
+
+function SendNotificationCustomer($UserInfo, $msg)
+{
+    $shopLocation = $UserInfo['ShopLocation'];
+    $userID = $UserInfo['telegramId'];
+    date_default_timezone_set("Africa/Addis_Ababa");
+
+
+    $detailText = urlencode("
+    🔔" . $msg . "\n\nShop Name:" . $shopLocation .  "\n\n");
+
+    message($userID, $detailText);
+}
+
+function UpdateExpDate($data)
+{
+    $UID = $data['id'];
+
+    global $db;
+    $query = "UPDATE subscriptionlist SET sub_status = 'Ended' WHERE id=$UID";;
+    $res = mysqli_query($db, $query);
+    return $res;
+}
+
+function DiscardMembership($data)
+{
+    $UID = $data['id'];
+
+    global $db;
+    $query = "UPDATE membership SET step = 'Expired' WHERE id=$UID";;
+    $res = mysqli_query($db, $query);
+    return $res;
+}
+
+function sendNotificationAdmin($UserInfo, $msg)
+{
+    $shopLocation = $UserInfo['ShopLocation'];
+    $userName = $UserInfo['sub_name'];
+
+    date_default_timezone_set("Africa/Addis_Ababa");
+
+
+    $detailText = urlencode("
+    🔔" . $msg . "\n\nShop Name:" . $shopLocation .  "\n\n" . "Customer Name:" . $shopLocation .  "\n\n");
+
+    message(5102867263, $detailText);
+}
+
+function sendExpiredMessage($data)
+{
+
+    $detailText = urlencode("
+    🔔" . "Your Membership Has Expired" . "\n\n Please update your membership" . "\n\n");
+
+    message($data['telegramID'], $detailText);
+}
+
+function sendNoticeExpiration($data)
+{
+
+    $detailText = urlencode("
+    🔔" . "Your membership expires in three days." . "\n\n Please update your membership" . "\n\n");
+
+    message($data['telegramID'], $detailText);
+}
+
+function UpdateNextPickupdate($data)
+{
+
+    $productId = $data['product_id'];
+    $MonthToAdd = '';
+    global $connection;
+    $query = "SELECT * FROM products WHERE 	productId= $productId";
+    $res = mysqli_query($connection, $query);
+    $respo = mysqli_fetch_assoc($res);
+
+    if ($respo['delivery_option'] == 1) {
+        $MonthToAdd = "+1 Weeks";
+    } else if ($respo['delivery_option'] == 2) {
+        $MonthToAdd = "+2 Week";
+    } else if ($respo['delivery_option'] == 3) {
+        $MonthToAdd = "+1 Month";
+    }
+
+    date_default_timezone_set("Africa/Addis_Ababa");
+    $Today = date('Y-m-d');
+    $nextDate = date('Y-m-d', strtotime($MonthToAdd));
+    $query = "UPDATE subscriptionlist SET next_orderDate = '$nextDate' WHERE productId=$productId";;
+    $res = mysqli_query($connection, $query);
+}
+
 
 function setMemberCompleted($UID, $curDate, $ExpDate)
 {

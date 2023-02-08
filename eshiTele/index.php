@@ -20,25 +20,39 @@ function makeApiSignup($userInfo)
 	$emails = $userInfo['email'];
 	$fullName = $userInfo['full_name'];
 
+
+
+	var_dump($userName);
+	var_dump($PhoneNumber);
+	var_dump($passwordGen);
+	var_dump($fullName);
+
+
+	echo "here yts";
+
 	// API endpoint URL
-	$url = 'https://example.com/api/data';
+	$url = 'http://localhost:4000/Auth/botsignup';
 
 	// Data to be sent in the POST request
-	$data = [
+	$newdata = [
 		'userName' => $userName,
 		'email' => $emails,
 		'fullName' => $fullName,
 		'phoneNumber' => $PhoneNumber,
 		'password' => $passwordGen
 	];
-
+	$data = json_encode($newdata);
+	var_dump($data);
 	// Initialize cURL
-	$ch = curl_init($url);
-
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
 	// Set cURL options
 	curl_setopt($ch, CURLOPT_POST, true);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		"Content-Type: application/json"
+	  ));
 
 	// Execute the cURL request
 	$response = curl_exec($ch);
@@ -53,7 +67,7 @@ function makeApiSignup($userInfo)
 
 	// Decode the JSON response
 	$result = json_decode($response, true);
-
+	var_dump($result);
 	// Use the result as needed
 
 }
@@ -108,7 +122,7 @@ $pusher = new Pusher\Pusher(
 // $Amount = $jsonnofityData['totalAmount'];
 
 
-$jsonnofityData = "jsif77jfty8M";
+$jsonnofityData = "jsif77jfty7";
 
 // $userId = returnid($tansactionchars);
 file_put_contents("Lemlem1.txt", $userId . PHP_EOL . PHP_EOL, FILE_APPEND);
@@ -119,7 +133,7 @@ var_dump($output);
 // $output = implode('', array_slice(str_split($jsonnofityData['outTradeNo']), 10));
 
 if (strpos($output, 'M') !== false) {
-	echo "Output1 contains M";
+
 	$userId = preg_replace('/[^0-9]/', '', $output);
 	$check = checkMembership($userId);
 	if ($check) {
@@ -153,16 +167,16 @@ if ($OrderType == "Pickup Order") {
 	SetCompletedPickup($UserInfo, $Amount, $orderNumber, $productInfo, "paid");
 	deleteMessage($UserTgId, $MsgLast, $MsgStart);
 	SendCompletedMsg($UserTgId, $userId, $orderNumber, $PickUpLocation, $selectedFirstDate);
-	SendNotificationMsg($UserInfo, 'New Subscription');
+	// SendNotificationMsg($UserInfo, 'New Subscription');
 } elseif ($OrderType == "Delivery Order") {
 	SetCompletedDelivery($UserInfo, $Amount, $orderNumber, $productInfo, "paid");
 	deleteMessage($UserTgId, $MsgLast, $MsgStart);
 	SendCompletedDelivery($UserTgId, $Userlocation, $orderNumber, $PickUpLocation, $selectedFirstDate);
-	SendNotificationMsg($UserInfo, 'New Subscription');
+	// SendNotificationMsg($UserInfo, 'New Subscription');
 } elseif ($OrderType == "Membership") {
-	// $respo = makeApiSignup($UserInfos);
+	$respo = makeApiSignup($UserInfos);
 	// Get the current date in the format 'Y-m-d'
-	echo "Here.." . $OrderType;
+
 	date_default_timezone_set("Africa/Addis_Ababa");
 	$MembershipDate = date('Y-m-d');
 
