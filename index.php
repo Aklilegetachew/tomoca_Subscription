@@ -456,7 +456,7 @@ if ($callBackdata == "Cancel Order" && $step == "LastOpt") {
 
 
 
-if ($adminstep == "Admin" && $text == 'Create Post') {
+if ($adminstep == "home" && $text == 'Create Post') {
 
   Createfunc($update);
 }
