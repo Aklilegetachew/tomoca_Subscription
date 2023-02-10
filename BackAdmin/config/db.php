@@ -10,7 +10,6 @@
 // $connection = mysqli_connect('localhost', 'versavvymediacom_demoBot', "N)3Uj(;c!Q@v", 'versavvymediacom_demoBot');
 // $connection = mysqli_connect('localhost', 'versavvymediacom_sample_bot', $_ENV['DATABASE_PASSWORD'], 'versavvymediacom_sampleBot');
 
-// $connection = mysqli_connect('localhost', 'root', '', 'tomocainfo');
 
 // if (!$connection) {
 //     echo "Error: Unable to connect to MySQL." . PHP_EOL;
@@ -28,7 +27,8 @@ $username = $_ENV["SERV_DB_USERNAME"];
 $password = $_ENV["SERV_DB_PASSWORD"];
 $dbname = $_ENV["SERV_DB_NAME"];
 
-$connection = mysqli_connect($servername, $username, $password, $dbname);
+// $connection = mysqli_connect($servername, $username, $password, $dbname);
+$connection = mysqli_connect('localhost', 'root', '', 'tomocainfo');
 
 if (!$connection) {
     echo "Error: Unable to connect to MySQL." . PHP_EOL;

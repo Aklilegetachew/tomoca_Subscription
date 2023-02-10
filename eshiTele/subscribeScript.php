@@ -2,13 +2,14 @@
 
 <?php
 
-include './config/db.php';
+include '../config.php';
 include '../functions.php';
 
-global $connection;
+
+global $db;
 $query = "SELECT * FROM subscriptionlist WHERE payment_status = 'paid' AND 	sub_status = 'Online'";
 
-$result = mysqli_query($connection, $query);
+$result = mysqli_query($db, $query);
 
 
 // $options = array(
@@ -36,7 +37,9 @@ while ($res2 = mysqli_fetch_assoc($result)) {
     } else {
 
         $deliveryDate = new DateTime($res2['next_orderDate']);
-        if ($today == $deliveryDate) {
+
+      
+        if ($today->format('Y-m-d') == $deliveryDate->format('Y-m-d')) {
             if ($res2['orderType'] == 'Pickup Order') {
 
                 $response  =  makePickupOrder($res2);
@@ -50,7 +53,7 @@ while ($res2 = mysqli_fetch_assoc($result)) {
                 // $data['Orderdate'] = date("M Y,d");
                 // $pusher->trigger('my-channel', 'my-event', $data);
             } else {
-                $res = Eshiservice($res2);
+                // $res = Eshiservice($res2);
                 $update = json_decode($res, true);
 
                 makeDeliveryOrder($res2, $update['data']['pickup_tracking_link'], $update['data']['delivery_tracing_link'], $update['data']['job_id']);

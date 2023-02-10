@@ -228,7 +228,7 @@ function appendQuantity($text, $user_id)
 
 function makePickupOrder($data)
 {
-    global $connection;
+    global $db;
     $FirstName = $data['sub_name'];
     $phoneNumber = $data['sub_phone'];
     $productID = $data['product_id'];
@@ -241,14 +241,14 @@ function makePickupOrder($data)
 
     $query = "INSERT INTO pickuppayed(UserID, FirstName, LastName, NumProduct, TotalAmount, TransactionID, PhoneNumber, ShopLocation, Pickstatus, product_id)
     VALUES ('$UserId', '$FirstName', '$FirstName', '$productID', '$totalAmn', '$tnxNumber', '$phoneNumber', '$shopLocation', 'NEW', '$productID')";
-    $res = mysqli_query($connection, $query);
+    $res = mysqli_query($db, $query);
     return $res;
 }
 
 
 function makeDeliveryOrder($data, $PickUpLink, $deliveryLink, $jobId)
 {
-    global $connection;
+    global $db;
     $FirstName = $data['sub_name'];
     $phoneNumber = $data['sub_phone'];
     $productID = $data['product_id'];
@@ -265,7 +265,7 @@ function makeDeliveryOrder($data, $PickUpLink, $deliveryLink, $jobId)
 
     $query = "INSERT INTO deliveryorders(FirstName, LastName, PhoneNumber, OrderNumber, Total, Status, ShopLocation, TinName, TinNumber, orderDate, orderTime, DeliveryID, DeliveryUrl)
     VALUES ('$FirstName', '$FirstName', '$phoneNumber', '$tnxNumber', '$totalAmn', 'NEW', '$shopLocation', '$tin_name', '$tin_num' ,'$today', '$today', '$jobId', '$deliveryLink')";
-    $res = mysqli_query($connection, $query);
+    $res = mysqli_query($db, $query);
     return $res;
 }
 
@@ -852,7 +852,7 @@ function sendNotificationAdmin($UserInfo, $msg)
 
 
     $detailText = urlencode("
-    🔔" . $msg . "\n\nShop Name:" . $shopLocation .  "\n\n" . "Customer Name:" . $shopLocation .  "\n\n");
+    🔔" . $msg . "\n\nShop Name:" . $shopLocation .  "\n\n" . "Customer Name:" . $userName .  "\n\n");
 
     message(5102867263, $detailText);
 }
@@ -1221,7 +1221,7 @@ function setOrder($user_id, $orderTyp)
 function setTitle($user_id, $PTitle)
 {
     global $db;
-    $query = "UPDATE products SET Title = '$PTitle' WHERE productId=$user_id";;
+    $query = "UPDATE products SET Title = '$PTitle', package_Type = 'PROD' WHERE productId=$user_id";;
     $res = mysqli_query($db, $query);
     return $res;
 }

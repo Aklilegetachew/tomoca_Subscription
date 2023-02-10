@@ -238,7 +238,7 @@ if ($user_id !== 5102867263 && $step == "SubscriptionStart") {
 }
 
 
-//==================================== phone number set up===================//
+//==================================== phone number set up ===================//
 
 if ($Contact || $text == "Going back!" && $step == "Order Type") {
 
@@ -567,3 +567,6 @@ switch ($adminstep) {
     }
     break;
 }
+
+
+return 1;

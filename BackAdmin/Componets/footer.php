@@ -718,7 +718,7 @@
                             data: 'TotalAmount'
                         },
                         {
-                            data: 'Payment'
+                            data: 'Pickstatus'
                         },
                         {
                             data: 'ID',
