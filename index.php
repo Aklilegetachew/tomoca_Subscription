@@ -43,7 +43,6 @@ if (array_key_exists('message', $update)) {
 }
 
 $step = getStep($user_id);
-$stepMem = getStepMem($user_id);
 $adminstep = getAdminStep($user_id);
 
 
@@ -123,101 +122,115 @@ $date3 = DateTime::createFromFormat('h:i a', $sunset);
 
 
 if ($user_id !== 5102867263) {
-  if (strcmp($text, '/start') !== 0 && $stepMem == null || $step == null || $step == "Payed") {
+  if (strcmp($text, '/start') !== 0 && $step == null || $step == "Payed") {
     FirstBack:
     $selectedItem = null;
     $selectedItem = substr($text, 7);
     if ($selectedItem == null) {
       $markup  = array('inline_keyboard' => array(array(array('text' => 'Back to Channel',  'url' => 'https://t.me/TomTomChan'))));
       $markupjs = json_encode($markup);
-      message($chat_id, "please select Subscription from the channel", $markupjs);
+      message($chat_id, "please select product from the channel", $markupjs);
+    } else if ($selectedItem == '61' || $selectedItem == '63' || $selectedItem == '64' || $selectedItem == '65' || $selectedItem == '66' || $selectedItem == '67' || $selectedItem == '53' || $selectedItem == '54' || $selectedItem == '55' || $selectedItem == '56' || $selectedItem == '57' || $selectedItem == '58' || $selectedItem == '60' || $selectedItem == '101' || $selectedItem == '102' || $selectedItem == '103' || $selectedItem == '104' || $selectedItem == '105') {
+      $markup  = array('inline_keyboard' => array(array(array('text' => 'Back to Channel',  'url' => 'https://t.me/TomTomChan'))));
+      $markupjs = json_encode($markup);
+      message($chat_id, "250 grams is temporarily sold out. 350 and 500 grams coffee goods are available for purchase. Thank you for taking the time to read this.", $markupjs);
     } else {
 
       $ID = intval($selectedItem);
       $selection = GetSelection($ID);
-      if ($selection['package_Type'] == 'MEB') {
-        $respo =  addMember($first_name, $Last_name, $user_id, $ID, $message_id, $selection);
-        if ($respo) {
-          setStepMem($user_id, "MembershipStart");
-          DetailTextMem($chat_id);
-          showMembershipDetail($UID, $chat_id, $message_id,  $selection);
-        } else {
-          $markup  = array('inline_keyboard' => array(array(array('text' => 'Back to Channel',  'url' => 'https://t.me/TomTomChan'))));
-          $markupjs = json_encode($markup);
-          message($chat_id, "You are currently a Member. ", $markupjs);
-        }
-      } else {
-
-        adduser($first_name, $Last_name, $user_id, $ID, $message_id, $selection);
-        setStep($user_id, "SubscriptionStart");
-        DetailText($chat_id);
-        showSubscriptionDetail($UID, $chat_id, $message_id,  $selection);
+      $IntPrice = intval($selected_price);
+      adduser($first_name, $Last_name, $user_id, $ID, $message_id);
+      $userIdDb = getUserID($user_id);
+      setProductId($userIdDb, $ID);
+      $cartStart = getCartIDstart($userIdDb);
+      $cartend = getCartIDend($userIdDb);
+      setCartStart($userIdDb, $cartStart);
+      setCartend($userIdDb, $cartend);
+      if (!($date1 > $date2 && $date1 < $date3) && (getStep($user_id) == "") && (getMisc($user_id) == 0)) {
+        $msg = urlencode(" Notice\n Dear Customer, Orders placed after 6 p.m. will be dispatched the next day.\n ውድ ደንበኞች፣ ከምሽቱ 12 ሰአት በኋላ ትእዛዝ ካዘዙ። ታዕዛዞ በሚቀጥለው ቀን እንደሚደርስ በትህትና እንገልጻለን.");
+        message($chat_id, $msg);
+        setmisc($user_id);
       }
-
-      // showdetail($UID, $chat_id, $user_id, $message_id);
-      // $res = setQuantity("0");
+      setStep($user_id, "Keypad");
+      $res = setQuantity("0");
     }
   }
 }
 
-// ===================== detail response  =========================
 
-if ($user_id !== 5102867263 && $stepMem == "MembershipStart") {
-  if ($text == "Next") {
-    sharePhone($chat_id);
-    setStepMem($user_id, "MemberFinal");
-  } elseif ($text == "Go Back") {
-    BackNotif($update);
-    // goto QUAN;
-  } elseif ($text == "Cancel") {
+// ================ key pad ===================================
 
-    $userIdDb = getUserIDMem($user_id);
-    $UserInfo = getUserInputMem($userIdDb);
-    CancelNotifyerUser($chat_id);
-    DeletRequestMem($userIdDb);
-  } elseif ($text !== "Cancel" && $text !== "Go Back" && $text !== "Next" && $text !== "submit") {
-    $markup  = array('keyboard' => array(array('Next'), array('Go Back', 'Cancel')), 'resize_keyboard' => true, 'selective' => true, 'one_time_keyboard' => true);
+if (is_numeric($text) && $step == "Keypad" && $text !== "submit" && $user_id !== 5102867263) {
+  $userIdDb = getUserID($user_id);
+  appendQuantity($text, $userIdDb);
+  $text = getquantity($userIdDb);
+  editMessage($user_id, $message_id, $text);
+} elseif ($step == "Keypad" && $text == "submit") {
+  $userIdDb = getUserID($user_id);
+  $num = getquantity($userIdDb);
+  $amount = $num;
+
+  if (intval($amount) > 0 && intval($amount) <= 100) {
+    message($chat_id, "Processing", null);
+    setStep($user_id, "Next");
+    setAmount($amount, $chat_id, $user_id, $message_id);
+    $UID = getUserID($user_id);
+    DetailText($chat_id);
+    showdetail($UID, $chat_id, $user_id, $message_id);
+  } elseif (!is_numeric($amount) && $text !== 'Cancel') {
+    $markup  = array('keyboard' => array(array('Cancel')), 'resize_keyboard' => true, 'selective' => true, 'one_time_keyboard' => true);
     $markupjs = json_encode($markup);
-    $msg = urlencode("please choose only from the options provided. or cancel the previous order to empty your cart\nካሉት አማራጮች ብቻ ይምረጡ");
-
-    message($chat_id, $msg, $markupjs);
+    message($chat_id, "Please Enter a valid input or cancel previous order", $markupjs);
+  } elseif (intval($amount) <= 0 || intval($amount) >= 101) {
+    $msg = urlencode("Quantity should be integer starting from 1 to 100\nብዛት ከ 1 - 100 ይወሰናል");
+    message($chat_id, $msg);
+    $UID = getUserID($user_id);
+    ClearQuan($UID);
+    editMessage($user_id, $message_id, "0");
   }
+} elseif ($step == "Keypad" && $text == "Clear") {
+  $UID = getUserID($user_id);
+  ClearQuan($UID);
+  editMessage($user_id, $message_id, "0");
+} elseif ($step == "Keypad" && $text == "Cancel") {
+  $userIdDb = getUserID($user_id);
+  $UserInfo = getUserInput($userIdDb);
+  $startMsg = $UserInfo['StartID'];
+  deleteMessage($chat_id, $message_id, $startMsg);
+  CancelNotifyerUser($chat_id);
+  $userIdDb = getUserID($user_id);
+  DeletRequest($userIdDb);
+} elseif ($step == "Keypad" && $text !== "Cancel" && $text !== "Clear" && $text !== "submit") {
+  $markup  = array('keyboard' => array(array('Cancel')), 'resize_keyboard' => true, 'selective' => true, 'one_time_keyboard' => true);
+  $markupjs = json_encode($markup);
+  $msg = urlencode("please choose only from the options provided. or cancel the previous order to empty your cart\nካሉት አማራጮች ብቻ ይምረጡ");
+  message($chat_id, $msg, $markupjs);
 }
 
-// =============================== Membership setting phone number ================================
+// ====================== Admin start  ==============================
 
-if ($Contact && $stepMem == "MemberFinal") {
-  setphoneMem($user_id, $Contact);
-  ChooseProviderMem($chat_id, $user_id);
-  setStepMem($user_id, "MembershipCheckout");
-} elseif ($text == "Back" && $stepMem == "MemberFinal") {
-  $userIdDb = getUserIDMem($user_id);
-  BackNotif($update);
-  setStepMem($user_id, "MembershipStart");
-} elseif ($step == "MemberFinal" && !is_numeric($text) && $text !== "Cancel") {
-  $markup  = array('keyboard' => array(array(array('text' => 'Cancel'), array('text' => 'Phone Number', 'request_contact' => true))), 'resize_keyboard' => true, 'one_time_keyboard' => true, 'selective' => true);
-  $markupjs = json_encode($markup);
-  message($chat_id, "Please insert Phone number! or cancel previous order", $markupjs);
-} elseif (is_numeric($text) && $stepMem == "MemberFinal") {
-  setphoneMem($user_id, $text);
-  ChooseProviderMem($chat_id, $user_id);
-  setStepMem($user_id, "MembershipCheckout");
-} elseif ($text == "Cancel"  && $stepMem == "MemberFinal") {
-  $userIdDb = getUserIDMem($user_id);
-  $UserInfo = getUserInputMem($userIdDb);
-  CancelNotifyerUser($chat_id);
-  DeletRequestMem($userIdDb);
+$amount = null;
+$step = getStep($user_id);
+$adminstep = getAdminStep($user_id);
+
+if ($adminstep == 'home') {
+  setAdminStep($user_id, "Admin");
+  Adminfunc($update);
 }
 
 // ===================== detail response  =========================
 
-if ($user_id !== 5102867263 && $step == "SubscriptionStart") {
+if ($user_id !== 5102867263 && $step == "Next") {
   if ($text == "Next") {
-    sharePhone($chat_id);
-    // AddCart($chat_id, $user_id);
-    setStep($user_id, "Order Type");
+    AddCart($chat_id, $user_id);
+    setStep($user_id, "AddOrder");
   } elseif ($text == "Go Back") {
     BackNotif($update);
+    setStep($user_id, "Keypad");
+    $UID = getUserID($user_id);
+    $num = getquantity($UID);
+    setBack($num, $chat_id, $user_id, $message_id);
+    $res = setQuantity($num);
     // goto QUAN;
   } elseif ($text == "Cancel") {
 
@@ -238,33 +251,33 @@ if ($user_id !== 5102867263 && $step == "SubscriptionStart") {
 }
 
 
-//==================================== phone number set up ===================//
+// ===================== setting phone and order type ======================
 
-if ($Contact || $text == "Going back!" && $step == "Order Type") {
+if ($Contact || $text == "Going back!" && $step == "quantity") {
 
   setphone($user_id, $Contact);
   recape:
   switch ($step) {
-    case "Order Type": {
+    case "Location": {
         orderType();
-        setStep($user_id, "Location");  // provider
+        setStep($user_id, "OrderType");  // provider
       }
       break;
   }
-} elseif ($text == "Back" && $step == "Order Type") {
+} elseif ($text == "Back" && $step == "Location") {
   $userIdDb = getUserID($user_id);
   BackNotif($update);
   setPhase($userIdDb, "true");
   AddCart($chat_id, $user_id);
   setStep($user_id, "AddOrder");
-} elseif ($step == "Order Type" && !is_numeric($text) && $text !== "Cancel") {
+} elseif ($step == "Location" && !is_numeric($text) && $text !== "Cancel") {
   $markup  = array('keyboard' => array(array(array('text' => 'Cancel'), array('text' => 'Phone Number', 'request_contact' => true))), 'resize_keyboard' => true, 'one_time_keyboard' => true, 'selective' => true);
   $markupjs = json_encode($markup);
   message($chat_id, "Please insert Phone number! or cancel previous order", $markupjs);
-} elseif (is_numeric($text) && $step == "Order Type") {
+} elseif (is_numeric($text) && $step == "Location") {
   setphone($user_id, $text);
   goto recape;
-} elseif ($text == "Cancel"  && $step == "Order Type") {
+} elseif ($text == "Cancel"  && $step == "Location") {
 
   $userIdDb = getUserID($user_id);
   $UserInfo = getUserInput($userIdDb);
@@ -274,21 +287,64 @@ if ($Contact || $text == "Going back!" && $step == "Order Type") {
   $userIdDb = getUserID($user_id);
   DeletRequest($userIdDb);
 }
+// =============== Add order to the cart ================================== 
 
+if ($step == "AddOrder" && $text == "Next") {
 
-//========================= pickup or delivery =======================//
+  $userIdDb = getUserID($user_id);
+  $cartEnd = getCartIDend($userIdDb);
+  $userIn = getUserInput($userIdDb);
+  $startCart = $userIn['CartStart'];
+  $checker = CheckQuantity($userIdDb, $startCart, $cartEnd);
+  if ($checker) {
+    setTotalAmount($userIdDb, $startCart, $cartEnd);
+    setPhase($userIdDb, "false");
+    showTotalDetail($userIdDb, $chat_id, $user_id);
+    sharePhone($chat_id);
+    setStep($user_id, "Location");
+  } else {
+    $UID = getUserID($user_id);
+    setSteppayed($UID, "");
+    ClearQuan($UID);
+    addProductLess($chat_id);
+  }
+} elseif ($step == "AddOrder" && $text == "Yes") {
+  $UID = getUserID($user_id);
+  setSteppayed($UID, "");
+  ClearQuan($UID);
+  AddNotifyerUser($chat_id);
+} elseif ($step == "AddOrder" && $text == "Cancel") {
+  setStep($user_id, "Next");
+  $UID = getUserID($user_id);
+  $cartend = getCartIDend($UID);
+  DeleteCart($cartend);
+  $cartEnd = intval($cartend) - 1;
+  setCartend($UID, $cartEnd);
+  DetailText($chat_id);
+  showdetail($UID, $chat_id, $user_id, $message_id);
+} elseif ($step == "AddOrder" && $text !== "Cancel" && $text !== "Yes" && $text !== "Next" && $text !== "Submit") {
+  $markup  = array('keyboard' => array(array('Cancel')), 'resize_keyboard' => true, 'selective' => true, 'one_time_keyboard' => true);
+  $markupjs = json_encode($markup);
+  $msg = urlencode("please choose only from the options provided. or cancel the previous order to empty your cart\nካሉት አማራጮች ብቻ ይምረጡ");
+  message($chat_id, $msg, $markupjs);
+}
 
-if ($text == "Pickup Order" && $step == "Location") {
+// ===================== pickup and delivery ============================== 
+
+if ($text == "Pickup Order" && $step == "OrderType") {
   setOrder($user_id, $text);
   ChooseShop($chat_id);
   setStep($user_id, "Shop");
-} elseif ($text == "Delivery Order" && $step == "Location") {
+} elseif ($text == "Delivery Order" && $step == "OrderType") {
   setOrder($user_id, $text);
   KindOfOrder($chat_id);
   setStep($user_id, "Tin");
-} elseif ($text !== "Delivery Order" && $step == "Location" && $text !== "Pickup Order" && $text !== "Back" && $text !== "Cancel Order") {
-  message($chat_id, "Please choose from the options only", null);
-} elseif ($text == "Cancel Order" && $step == "Location") {
+} elseif ($text !== "Delivery Order" && $step == "OrderType" && $text !== "Pickup Order" && $text !== "Back" && $text !== "Cancel Order") {
+  $markup  = array('keyboard' => array(array(array('text' => 'Cancel Order'), array('text' => 'Delivery Order'))), 'resize_keyboard' => true, 'one_time_keyboard' => true, 'selective' => true);
+  $markupjs = json_encode($markup);
+  $msg = urlencode("please choose only from the options provided. or cancel the previous order to empty your cart\nካሉት አማራጮች ብቻ ይምረጡ");
+  message($chat_id, $msg, $markupjs);
+} elseif ($text == "Cancel Order" && $step == "OrderType") {
   $userIdDb = getUserID($user_id);
   $UserInfo = getUserInput($userIdDb);
   $startMsg = $UserInfo['StartID'];
@@ -296,13 +352,11 @@ if ($text == "Pickup Order" && $step == "Location") {
   CancelNotifyerUser($update);
   $userIdDb = getUserID($user_id);
   DeletRequest($userIdDb);
-} elseif ($text == "Back" && $step == "Location") {
-  setStep($user_id, "Order Type");
+} elseif ($text == "Back" && $step == "OrderType") {
+  setStep($user_id, "Location");
   BackNotif($update);
   sharePhone($chat_id);
 }
-
-
 
 // ======================== Tin number or not ==========================
 
@@ -313,7 +367,10 @@ if ($text == "Personal Order" && $step == "Tin") {
   BusinessName($chat_id);
   setStep($user_id, "Tin1");
 } elseif ($text !== "Personal Order" && $step == "Tin" && $text !== "Business Order" && $text !== "Back" && $text !== "Cancel Order") {
-  message($chat_id, "Please choose from the options only", null);
+  $markup  = array('keyboard' => array(array(array('text' => 'Cancel Order'), array('text' => 'Personal Order'), array('text' => 'Business Order'))), 'resize_keyboard' => true, 'one_time_keyboard' => true, 'selective' => true);
+  $markupjs = json_encode($markup);
+  $msg = urlencode("please choose only from the options provided. or cancel the previous order to empty your cart\nካሉት አማራጮች ብቻ ይምረጡ");
+  message($chat_id, $msg, $markupjs);
 } elseif ($text == "Cancel Order" && $step == "Tin") {
   $userIdDb = getUserID($user_id);
   $UserInfo = getUserInput($userIdDb);
@@ -327,8 +384,6 @@ if ($text == "Personal Order" && $step == "Tin") {
   BackNotif($update);
   sharePhone($chat_id);
 }
-
-
 
 // ======================== Business Name ===========================
 
@@ -350,6 +405,7 @@ if ($text !== "Submit Name" && $step == "Tin1" && $text !== "Back" && $text !== 
   BackNotif($update);
   KindOfOrder($chat_id);
 }
+
 
 if ($step == "Tin2" && $text !== "Back" && $text !== "Cancel") {
 
@@ -375,7 +431,10 @@ if ($step == "Tin2" && $text !== "Back" && $text !== "Cancel") {
   BusinessName($chat_id);
 }
 
-// ======================= Pick up Shop Location =============================
+
+
+
+// ======================= Shop Location =============================
 
 if (str_contains($text, "To.") && $step == "Shop") {
   setShop($user_id, $text);
@@ -384,7 +443,6 @@ if (str_contains($text, "To.") && $step == "Shop") {
 } elseif (!str_contains($text, "To.") && $step == "Shop") {
   message($chat_id, "please choose shop location", null);
 }
-
 
 
 // ======================= location setting ==========================
@@ -424,7 +482,6 @@ if ($longtiude && $latitude && $step == "Provider") {
   DeletRequest($userIdDb);
 }
 
-
 // ======================== Last option payment provider ============================== 
 
 if ($callBackdata == "Cancel Order" && $step == "LastOpt") {
@@ -450,13 +507,20 @@ if ($callBackdata == "Cancel Order" && $step == "LastOpt") {
 }
 
 
-
-
 //======================= Admin ====================================== //
 
+// switch ($adminstep) {
+//   case "Admin": {
 
+//       if ($text == 'Create Post') {
+//         Createfunc($update);
+//       } elseif ($text == 'Orders') {
+//       }
+//     }
+//     break;
+// }
 
-if ($adminstep == "home" && $text == 'Create Post') {
+if ($adminstep == "Admin" && $text == 'Create Post') {
 
   Createfunc($update);
 }
