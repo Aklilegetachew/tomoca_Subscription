@@ -4,9 +4,9 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 //////////////////////////CONNECT TO DATABASE ////////////////////
-$db = mysqli_connect('localhost', $_ENV['DATABASELOCALHOST'], '', 'tomocainfo');
+// $db = mysqli_connect('localhost', $_ENV['DATABASELOCALHOST'], '', 'tomocainfo');
 
-// $db = mysqli_connect('localhost', 'versavvymediacom_tomocaSubscription', $_ENV['DATABASE_PASSWORD'], 'versavvymediacom_tomocaSubscription');
+$db = mysqli_connect('localhost', 'versavvymediacom_tomocaSubscription', $_ENV['DATABASE_PASSWORD'], 'versavvymediacom_tomocaSubscription');
 
 if (!$db) {
     echo "Error: Unable to connect to MySQL." . PHP_EOL;
