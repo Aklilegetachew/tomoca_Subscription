@@ -4,9 +4,9 @@
 use JetBrains\PhpStorm\ArrayShape;
 
 
-include 'functions.php';
-include 'Admin.php';
-include 'paymproc.php';
+// include 'functions.php';
+// include 'Admin.php';
+// include 'paymproc.php';
 $input = file_get_contents('php://input');
 $update = json_decode($input, true);
 
