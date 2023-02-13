@@ -1289,7 +1289,7 @@ function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $sele
     }
 }
 
-function adduser($first_name, $Last_name, $user_id, $product_Id, $MSGID, $selectedItem)
+function adduser($first_name, $Last_name, $user_id, $product_Id, $MSGID, $selectedItem, $selectedType)
 {
     $first_name = preg_replace('/[^a-z]/i', '', $first_name);
     $first_name == "" ? $first_name = "customer" : $first_name;
@@ -1306,19 +1306,19 @@ function adduser($first_name, $Last_name, $user_id, $product_Id, $MSGID, $select
     $res2 = mysqli_fetch_assoc($res);
 
     if (empty($res2)) {
-        $query = "INSERT INTO users(UserName, UserId, userProductid, LastName, StartID, phase, TotalAmount, quantityHolder) VALUES ('$first_name', '$user_id', '$product_Id', '$Last_name', '$MSGID', 'true', '$totalSubscription', '$subscriptionKg')";
+        $query = "INSERT INTO users(UserName, UserId, userProductid, LastName, StartID, phase, TotalAmount, quantityHolder, createdType) VALUES ('$first_name', '$user_id', '$product_Id', '$Last_name', '$MSGID', 'true', '$totalSubscription', '$subscriptionKg', '$selectedType')";
         $res = mysqli_query($db, $query);
         if (!$res) {
             die('query failed' . mysqli_error($db));
         }
     } else {
 
-        if ($res2['phase'] == 'true') {
+        if ($res2['phase'] == 'true' && $res2['createdType'] == $selectedType) {
             $IdDb = $res2['Id'];
             $query = "UPDATE users SET userProductid = '$product_Id' WHERE Id=$IdDb";;
             $res = mysqli_query($db, $query);
         } else {
-            $query = "INSERT INTO users(UserName, UserId, userProductid, LastName, StartID, phase) VALUES ('$first_name', '$user_id', '$product_Id', '$Last_name', '$MSGID', 'true')";
+            $query = "INSERT INTO users(UserName, UserId, userProductid, LastName, StartID, phase, createdType) VALUES ('$first_name', '$user_id', '$product_Id', '$Last_name', '$MSGID', 'true', '$selectedType')";
             $res = mysqli_query($db, $query);
             if (!$res) {
                 die('query failed' . mysqli_error($db));
