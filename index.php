@@ -74,7 +74,9 @@ if ($user_id !== 5102867263) {
       $selection = GetSelection($ID);
 
       if ($selection['package_Type'] == 'MEB') {
-        adduser($first_name, $Last_name, $user_id, $ID, $message_id, $selection, "MEB");
+        setStepMem($user_id, "MembershipStart");
+        DetailTextMem($chat_id);
+        showMembershipDetail($UID, $chat_id, $message_id,  $selection);
       } else if ($selection['package_Type'] == 'SUB') {
 
         adduser($first_name, $Last_name, $user_id, $ID, $message_id, $selection, "SUB");
@@ -88,7 +90,6 @@ if ($user_id !== 5102867263) {
           $markupjs = json_encode($markup);
           message($chat_id, "250 grams is temporarily sold out. 350 and 500 grams coffee goods are available for purchase. Thank you for taking the time to read this.", $markupjs);
         } else {
-
           $ID = intval($selectedItem);
           $selection = GetSelection($ID);
           $IntPrice = intval($selected_price);
