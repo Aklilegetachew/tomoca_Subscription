@@ -9,7 +9,7 @@ include '../paymproc.php';
 $userId = urldecode(base64_decode($_GET['UserId']));
 // geting user info 
 // 919
-$UserInfo = getUserInputMem($userId);
+$UserInfo = getUserInput($userId);
 
 // write a simple for loop
 
