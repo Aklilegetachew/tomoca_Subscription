@@ -74,7 +74,8 @@ if ($user_id !== 5102867263) {
       $selection = GetSelection($ID);
 
       if ($selection['package_Type'] == 'MEB') {
-        setStepMem($user_id, "MembershipStart");
+        adduser($first_name, $Last_name, $user_id, $ID, $message_id, $selection, "MEB");
+        setStep($user_id, "MembershipStart");
         DetailTextMem($chat_id);
         showMembershipDetail($UID, $chat_id, $message_id,  $selection);
       } else if ($selection['package_Type'] == 'SUB') {
