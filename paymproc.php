@@ -191,13 +191,13 @@ function ChooseProviderPK($chat_id, $user_id)
 
 function ChooseProviderMem($chat_id, $user_id)
 {
-  $userupdate = $GLOBALS['updated'];
+  // $userupdate = $GLOBALS['updated'];
   // $chat_id = $data['message']['chat']['id'];
   // $user_id = $data['message']['from']['id'];
   // $message_id = $data['message']['message_id'];
   // $message_idnum = intval($message_id) + 1;
 
-  $UserId = getUserIDMem($user_id);
+  $UserId = getUserID($user_id);
   $urlStr = base64_encode(urlencode($UserId));
   $paramTel = 'https://versavvymedia.com/TomocaAdminBack/OrderingTeleMem/index.php?UserId=' . $urlStr;
   $markup  = array('inline_keyboard' => array(array(array('text' => 'telebirr',  'url' => $paramTel)), array(array('text' => 'Cancel Order', 'callback_data' => 'Cancel Order'))));
@@ -205,7 +205,7 @@ function ChooseProviderMem($chat_id, $user_id)
   // $markup2  = array('keyboard' => array(array('Cancel Order')), 'resize_keyboard' => true, 'selective' => true);
   // $markupj2s = json_encode($markup);
   $ret = message($chat_id, "Choose payment provider to continue ", $markupjs);
-  $userIdDb = getUserIDMem($user_id);
+  $userIdDb = getUserID($user_id);
   // setLastMsg($userIdDb, $message_idnum);
   return;
 }
