@@ -27,7 +27,7 @@ if ($user_id !== 5102867263 && $step == "MembershipStart") {
 
 if ($Contact && $step == "MemberFinal") {
     setphone($user_id, $Contact);
-    ChooseProvider($chat_id, $user_id);
+    ChooseProviderMem($chat_id, $user_id);
     setStep($user_id, "MembershipCheckout");
 } elseif ($text == "Back" && $step == "MemberFinal") {
     $userIdDb = getUserIDMem($user_id);
