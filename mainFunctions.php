@@ -102,6 +102,15 @@ function getStep($user_id)
     return $res2['step'];
 }
 
+function getSelectedType($user_id)
+{
+    global $db;
+    $query = "SELECT createdType From users WHERE UserId=$user_id";
+    $res = mysqli_query($db, $query);
+    $res2 = mysqli_fetch_assoc($res);
+    return $res2['createdType'];
+}
+
 
 function getStepMem($user_id)
 {

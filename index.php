@@ -43,6 +43,7 @@ if (array_key_exists('message', $update)) {
 }
 
 $step = getStep($user_id);
+$typeProduct = getSelectedType($user_id);
 $stepMem = getStepMem($user_id);
 $adminstep = getAdminStep($user_id);
 
@@ -60,7 +61,7 @@ $pusher = new Pusher\Pusher(
 
 
 if ($user_id !== 5102867263) {
-  if (strcmp($text, '/start') !== 0 && $stepMem == null || $step == null || $step == "Payed") {
+  if (strcmp($text, '/start') !== 0 && $stepMem == null || $step == null || $step == "Payed" || $typeProduct == null) {
     FirstBack:
     $selectedItem = null;
     $selectedItem = substr($text, 7);
@@ -105,9 +106,27 @@ if ($user_id !== 5102867263) {
           $res = setQuantity("0");
         }
       }
+    }
+  }
 
-      // showdetail($UID, $chat_id, $user_id, $message_id);
-      // $res = setQuantity("0");
+  if ($typeProduct !== null && $step !== null) {
+
+    switch ($typeProduct) {
+      case "PROD":
+        include 'purchaseWorkflow/index.php';
+        break;
+      case "SUB":
+        include 'Subscription/index.php';
+        break;
+      case "MEB":
+        include 'Subscription/index.php';
+        break;
+      default:
+
+        $markup  = array('inline_keyboard' => array(array(array('text' => 'Back to Channel',  'url' => 'https://t.me/TomTomChan'))));
+        $markupjs = json_encode($markup);
+        message($chat_id, "Uknown selection.", $markupjs);
+        break;
     }
   }
 }
