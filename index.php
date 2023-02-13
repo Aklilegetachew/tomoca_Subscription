@@ -92,7 +92,7 @@ if ($user_id !== 5102867263) {
           $ID = intval($selectedItem);
           $selection = GetSelection($ID);
           $IntPrice = intval($selected_price);
-          adduser($first_name, $Last_name, $user_id, $ID, $message_id, "PROD");
+          adduserPurchase($first_name, $Last_name, $user_id, $ID, $message_id, "PROD");
           $userIdDb = getUserID($user_id);
           setProductId($userIdDb, $ID);
           $cartStart = getCartIDstart($userIdDb);
