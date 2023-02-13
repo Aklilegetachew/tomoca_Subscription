@@ -17,12 +17,13 @@ if ($UserInfo) : ?>
 
   <?php
 
-  $UserName = $UserInfo['member_name'];
-  $UserPhoneNum = $UserInfo['member_phone'];
-  $ProductNum = $UserInfo['discount'];
-  $UserTgId = $UserInfo['telegramID'];
-  $UserTotalAmount = $UserInfo['total_price'];
-  $UserProductID = $UserInfo['product_Id'];
+
+$UserName = $UserInfo['UserName']. $UserInfo['LastName'];
+$UserPhoneNum = $UserInfo['PhoneNum'];
+$ProductNum = $UserInfo['quantityHolder'];
+$UserTgId = $UserInfo['UserId'];
+$UserTotalAmount = $UserInfo['TotalAmount'];
+$UserProductID = $UserInfo['userProductid'];
 
   $selectedItem = GetSelection(intval($UserProductID));
 
