@@ -61,7 +61,7 @@ $pusher = new Pusher\Pusher(
 
 
 if ($user_id !== 5102867263) {
-  if (strcmp($text, '/start') !== 0 && $step == null || $step == "Payed" || $typeProduct == null) {
+  if (strcmp($text, '/start') !== 0 && $step == null || $typeProduct == null) {
     FirstBack:
     $selectedItem = null;
     $selectedItem = substr($text, 7);
