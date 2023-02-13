@@ -1,7 +1,7 @@
 <?php
 
 
-if ($user_id !== 5102867263 && $stepMem == "MembershipStart") {
+if ($user_id !== 5102867263 && $step == "MembershipStart") {
     if ($text == "Next") {
         sharePhone($chat_id);
         setStep($user_id, "MemberFinal");
@@ -25,11 +25,11 @@ if ($user_id !== 5102867263 && $stepMem == "MembershipStart") {
 
 // =============================== Membership setting phone number ================================
 
-if ($Contact && $stepMem == "MemberFinal") {
+if ($Contact && $step == "MemberFinal") {
     setphone($user_id, $Contact);
     ChooseProvider($chat_id, $user_id);
     setStep($user_id, "MembershipCheckout");
-} elseif ($text == "Back" && $stepMem == "MemberFinal") {
+} elseif ($text == "Back" && $step == "MemberFinal") {
     $userIdDb = getUserIDMem($user_id);
     BackNotif($update);
     setStep($user_id, "MembershipStart");
@@ -37,11 +37,11 @@ if ($Contact && $stepMem == "MemberFinal") {
     $markup  = array('keyboard' => array(array(array('text' => 'Cancel'), array('text' => 'Phone Number', 'request_contact' => true))), 'resize_keyboard' => true, 'one_time_keyboard' => true, 'selective' => true);
     $markupjs = json_encode($markup);
     message($chat_id, "Please insert Phone number! or cancel previous order", $markupjs);
-} elseif (is_numeric($text) && $stepMem == "MemberFinal") {
+} elseif (is_numeric($text) && $step == "MemberFinal") {
     setphone($user_id, $text);
     ChooseProviderMem($chat_id, $user_id);
     setStep($user_id, "MembershipCheckout");
-} elseif ($text == "Cancel"  && $stepMem == "MemberFinal") {
+} elseif ($text == "Cancel"  && $step == "MemberFinal") {
     $userIdDb = getUserID($user_id);
     $UserInfo = getUserInput($userIdDb);
     CancelNotifyerUser($chat_id);
