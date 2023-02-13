@@ -122,92 +122,43 @@ $date2 = DateTime::createFromFormat('h:i a', $sunrise);
 $date3 = DateTime::createFromFormat('h:i a', $sunset);
 
 
-if ($user_id !== 5102867263) {
-  if (strcmp($text, '/start') !== 0 && $stepMem == null || $step == null || $step == "Payed") {
-    FirstBack:
-    $selectedItem = null;
-    $selectedItem = substr($text, 7);
-    if ($selectedItem == null) {
-      $markup  = array('inline_keyboard' => array(array(array('text' => 'Back to Channel',  'url' => 'https://t.me/TomTomChan'))));
-      $markupjs = json_encode($markup);
-      message($chat_id, "please select Subscription from the channel", $markupjs);
-    } else {
+// if ($user_id !== 5102867263) {
+//   if (strcmp($text, '/start') !== 0 && $stepMem == null || $step == null || $step == "Payed") {
+//     FirstBack:
+//     $selectedItem = null;
+//     $selectedItem = substr($text, 7);
+//     if ($selectedItem == null) {
+//       $markup  = array('inline_keyboard' => array(array(array('text' => 'Back to Channel',  'url' => 'https://t.me/TomTomChan'))));
+//       $markupjs = json_encode($markup);
+//       message($chat_id, "please select Subscription from the channel", $markupjs);
+//     } else {
 
-      $ID = intval($selectedItem);
-      $selection = GetSelection($ID);
-      if ($selection['package_Type'] == 'MEB') {
-        $respo =  addMember($first_name, $Last_name, $user_id, $ID, $message_id, $selection);
-        if ($respo) {
-          setStepMem($user_id, "MembershipStart");
-          DetailTextMem($chat_id);
-          showMembershipDetail($UID, $chat_id, $message_id,  $selection);
-        } else {
-          $markup  = array('inline_keyboard' => array(array(array('text' => 'Back to Channel',  'url' => 'https://t.me/TomTomChan'))));
-          $markupjs = json_encode($markup);
-          message($chat_id, "You are currently a Member. ", $markupjs);
-        }
-      } else {
+//       $ID = intval($selectedItem);
+//       $selection = GetSelection($ID);
+//       if ($selection['package_Type'] == 'MEB') {
+//         $respo =  addMember($first_name, $Last_name, $user_id, $ID, $message_id, $selection);
+//         if ($respo) {
+//           setStepMem($user_id, "MembershipStart");
+//           DetailTextMem($chat_id);
+//           showMembershipDetail($UID, $chat_id, $message_id,  $selection);
+//         } else {
+//           $markup  = array('inline_keyboard' => array(array(array('text' => 'Back to Channel',  'url' => 'https://t.me/TomTomChan'))));
+//           $markupjs = json_encode($markup);
+//           message($chat_id, "You are currently a Member. ", $markupjs);
+//         }
+//       } else {
 
-        adduser($first_name, $Last_name, $user_id, $ID, $message_id, $selection);
-        setStep($user_id, "SubscriptionStart");
-        DetailText($chat_id);
-        showSubscriptionDetail($UID, $chat_id, $message_id,  $selection);
-      }
+//         adduser($first_name, $Last_name, $user_id, $ID, $message_id, $selection);
+//         setStep($user_id, "SubscriptionStart");
+//         DetailText($chat_id);
+//         showSubscriptionDetail($UID, $chat_id, $message_id,  $selection);
+//       }
 
-      // showdetail($UID, $chat_id, $user_id, $message_id);
-      // $res = setQuantity("0");
-    }
-  }
-}
-
-// ===================== detail response  =========================
-
-if ($user_id !== 5102867263 && $stepMem == "MembershipStart") {
-  if ($text == "Next") {
-    sharePhone($chat_id);
-    setStepMem($user_id, "MemberFinal");
-  } elseif ($text == "Go Back") {
-    BackNotif($update);
-    // goto QUAN;
-  } elseif ($text == "Cancel") {
-
-    $userIdDb = getUserIDMem($user_id);
-    $UserInfo = getUserInputMem($userIdDb);
-    CancelNotifyerUser($chat_id);
-    DeletRequestMem($userIdDb);
-  } elseif ($text !== "Cancel" && $text !== "Go Back" && $text !== "Next" && $text !== "submit") {
-    $markup  = array('keyboard' => array(array('Next'), array('Go Back', 'Cancel')), 'resize_keyboard' => true, 'selective' => true, 'one_time_keyboard' => true);
-    $markupjs = json_encode($markup);
-    $msg = urlencode("please choose only from the options provided. or cancel the previous order to empty your cart\nካሉት አማራጮች ብቻ ይምረጡ");
-
-    message($chat_id, $msg, $markupjs);
-  }
-}
-
-// =============================== Membership setting phone number ================================
-
-if ($Contact && $stepMem == "MemberFinal") {
-  setphoneMem($user_id, $Contact);
-  ChooseProviderMem($chat_id, $user_id);
-  setStepMem($user_id, "MembershipCheckout");
-} elseif ($text == "Back" && $stepMem == "MemberFinal") {
-  $userIdDb = getUserIDMem($user_id);
-  BackNotif($update);
-  setStepMem($user_id, "MembershipStart");
-} elseif ($step == "MemberFinal" && !is_numeric($text) && $text !== "Cancel") {
-  $markup  = array('keyboard' => array(array(array('text' => 'Cancel'), array('text' => 'Phone Number', 'request_contact' => true))), 'resize_keyboard' => true, 'one_time_keyboard' => true, 'selective' => true);
-  $markupjs = json_encode($markup);
-  message($chat_id, "Please insert Phone number! or cancel previous order", $markupjs);
-} elseif (is_numeric($text) && $stepMem == "MemberFinal") {
-  setphoneMem($user_id, $text);
-  ChooseProviderMem($chat_id, $user_id);
-  setStepMem($user_id, "MembershipCheckout");
-} elseif ($text == "Cancel"  && $stepMem == "MemberFinal") {
-  $userIdDb = getUserIDMem($user_id);
-  $UserInfo = getUserInputMem($userIdDb);
-  CancelNotifyerUser($chat_id);
-  DeletRequestMem($userIdDb);
-}
+//       // showdetail($UID, $chat_id, $user_id, $message_id);
+//       // $res = setQuantity("0");
+//     }
+//   }
+// }
 
 // ===================== detail response  =========================
 
