@@ -92,14 +92,13 @@ if ($user_id !== 5102867263) {
           $ID = intval($selectedItem);
           $selection = GetSelection($ID);
           $IntPrice = intval($selected_price);
-          adduserPurchase($first_name, $Last_name, $user_id, $ID, $message_id, "PROD");
+          adduser($first_name, $Last_name, $user_id, $ID, $message_id);
           $userIdDb = getUserID($user_id);
           setProductId($userIdDb, $ID);
           $cartStart = getCartIDstart($userIdDb);
           $cartend = getCartIDend($userIdDb);
           setCartStart($userIdDb, $cartStart);
           setCartend($userIdDb, $cartend);
-
           setStep($user_id, "Keypad");
           $res = setQuantity("0");
         }
