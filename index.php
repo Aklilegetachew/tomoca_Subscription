@@ -119,7 +119,7 @@ if ($user_id !== 5102867263) {
         include 'Subscription/index.php';
         break;
       case "MEB":
-        include 'Subscription/index.php';
+        include 'membership/index.php';
         break;
       default:
 
