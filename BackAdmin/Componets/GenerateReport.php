@@ -31,8 +31,6 @@ function GetSelection($ID)
 }
 
 
-
-
 if (isset($_POST['report'])) {
 
     $option = array("Title", "Description", "Roast", "size",  "Quantity", "price", "Amount", "Total");

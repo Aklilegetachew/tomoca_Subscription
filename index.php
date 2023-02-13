@@ -81,7 +81,7 @@ if ($user_id !== 5102867263) {
         setStep($user_id, "SubscriptionStart");
         DetailText($chat_id);
         showSubscriptionDetail($UID, $chat_id, $message_id,  $selection);
-      } elseif ($selection['package_Type'] == 'PROD') {
+      } else if ($selection['package_Type'] == 'PROD') {
 
         if ($selectedItem == '61' || $selectedItem == '63' || $selectedItem == '64' || $selectedItem == '65' || $selectedItem == '66' || $selectedItem == '67' || $selectedItem == '53' || $selectedItem == '54' || $selectedItem == '55' || $selectedItem == '56' || $selectedItem == '57' || $selectedItem == '58' || $selectedItem == '60' || $selectedItem == '101' || $selectedItem == '102' || $selectedItem == '103' || $selectedItem == '104' || $selectedItem == '105') {
           $markup  = array('inline_keyboard' => array(array(array('text' => 'Back to Channel',  'url' => 'https://t.me/TomTomChan'))));
@@ -99,11 +99,7 @@ if ($user_id !== 5102867263) {
           $cartend = getCartIDend($userIdDb);
           setCartStart($userIdDb, $cartStart);
           setCartend($userIdDb, $cartend);
-          if (!($date1 > $date2 && $date1 < $date3) && (getStep($user_id) == "") && (getMisc($user_id) == 0)) {
-            $msg = urlencode(" Notice\n Dear Customer, Orders placed after 6 p.m. will be dispatched the next day.\n ውድ ደንበኞች፣ ከምሽቱ 12 ሰአት በኋላ ትእዛዝ ካዘዙ። ታዕዛዞ በሚቀጥለው ቀን እንደሚደርስ በትህትና እንገልጻለን.");
-            message($chat_id, $msg);
-            setmisc($user_id);
-          }
+       
           setStep($user_id, "Keypad");
           $res = setQuantity("0");
         }
