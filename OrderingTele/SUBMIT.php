@@ -81,7 +81,7 @@ function cancelLitsener($Money)
         // for Subescription
         $outTradeNum = getName(10) . $Money . 'S';
     } else {
-        // for membership
+        // for purchase
         $outTradeNum = getName(10) . $Money . 'P';
     }
     // http://196.188.123.12:8080/TomocaBot2/eshiTele/
