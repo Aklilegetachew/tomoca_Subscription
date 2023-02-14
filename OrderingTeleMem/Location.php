@@ -1,6 +1,6 @@
 <?php
 
-include '../functions.php';
+include '../mainFunctions.php';
 include '../paymproc.php';
 
 $received = json_decode(file_get_contents('php://input'));
