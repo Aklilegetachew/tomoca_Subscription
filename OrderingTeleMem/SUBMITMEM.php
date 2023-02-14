@@ -75,8 +75,8 @@ if ($received->action == 'submit') {
 }
 function cancelLitsener($Money)
 {
-    $UserInfo = getUserInputMem($Money);
-    $UserTotalAmount = $UserInfo['total_price'];
+    $UserInfo = getUserInput($Money);
+    $UserTotalAmount = $UserInfo['TotalAmount'];
     // http://196.188.123.12:8080/TomocaBot2/eshiTele/
 
     $appKey = $_ENV['TELE_APPKEY_PROD'];;

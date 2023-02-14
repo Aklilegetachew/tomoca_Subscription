@@ -231,16 +231,15 @@ $UserProductID = $UserInfo['userProductid'];
             UID: <?php echo $userId; ?>
           }).then(async res => {
             console.log(res)
-            // await axios.post('SUBMITMEM.php', {
-            //   action: 'submit',
-              // Money:
-             <?php echo $userId; ?>
-            // }).then(res => {
-            //   // to here
-            //   $("#cover-spin").hide();
-            //   let respo = JSON.parse(res.data)
-            //   window.location.href = respo.data.toPayUrl
-            // })
+            await axios.post('SUBMITMEM.php', {
+              action: 'submit',
+              Money:<?php echo $userId; ?>
+            }).then(res => {
+              // to here
+              $("#cover-spin").hide();
+              let respo = JSON.parse(res.data)
+              window.location.href = respo.data.toPayUrl
+            })
           })
         }
 
