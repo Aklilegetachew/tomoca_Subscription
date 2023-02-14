@@ -1,6 +1,6 @@
 <?php
 
-include '../functions.php';
+include '../mainFunctions.php';
 include '../paymproc.php';
 header('Content-Type:application/json; charset=utf-8');
 $received = json_decode(file_get_contents('php://input'));
@@ -77,11 +77,18 @@ function cancelLitsener($Money)
 {
     $UserInfo = getUserInput($Money);
     $UserTotalAmount = $UserInfo['TotalAmount'];
+    if ($UserInfo['createdType'] == 'SUB') {
+        // for Subescription
+        $outTradeNum = getName(10) . $Money . 'S';
+    } else {
+        // for membership
+        $outTradeNum = getName(10) . $Money . 'P';
+    }
     // http://196.188.123.12:8080/TomocaBot2/eshiTele/
 
     $appKey = $_ENV['TELE_APPKEY_PROD'];;
     $data = [
-        'outTradeNo' => getName(10) . $Money,
+        'outTradeNo' => $outTradeNum,
         'subject' => 'coffee',
         'totalAmount' => $UserTotalAmount,
         'shortCode' =>  $_ENV['TELE_SHORTCODE_PROD'],
