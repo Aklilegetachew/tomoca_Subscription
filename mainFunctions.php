@@ -1240,6 +1240,33 @@ function generate_membership_id()
     return "TOM-" . uniqid();
 }
 
+function addMembersPayed($userData, $Amount, $orderNumber){
+	$UserTgId = $userData['UserId'];
+	$Fullname = $userData['full_name'] ;
+    $phonenum = $userData['PhoneNum'];
+	$email = $userData['email'];
+    $UserTgId = $userData['UserId'];
+    $genId = generate_membership_id();
+    $genPassword = substr($genId, 0, 10);
+    date_default_timezone_set("Africa/Addis_Ababa");
+	$MembershipDate = date('Y-m-d');
+    $productID = $userData['userProductid'];
+	// Add one year to the current date to get the expiration date
+	$expirationDate = date('Y-m-d', strtotime('+1 year'));
+    $step = "MEMBER";
+
+
+    global $db;
+    $query = "INSERT INTO membership(member_name, member_GenPassword, telegramID, total_price, product_Id, step, email, Signup_Date, Exp_date, member_phone) VALUES ('$Fullname', '$genPassword','$UserTgId', '$Amount', '$productID', '$step', '$email', '$MembershipDate', '$expirationDate', '$phonenum')";
+    $res = mysqli_query($db, $query);
+    if (!$res) {
+        die('query failed' . mysqli_error($db));
+    }else{
+        return $genPassword;
+    }
+
+}
+
 
 function addMember($first_name, $Last_name, $user_id, $product_Id, $MSGID, $selectedItem)
 {

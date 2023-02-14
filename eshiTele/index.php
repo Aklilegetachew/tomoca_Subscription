@@ -9,14 +9,14 @@ $content = file_get_contents('php://input');
 
 $publicKey = $_ENV['TELE_PUBLICKEY_PROD'];
 
-function makeApiSignup($userInfo)
+function makeApiSignup($userInfo, $password, $total)
 {
 
 
-	$userName = $userInfo['member_name'];
-	$PhoneNumber = $userInfo['member_phone'];
-	$passwordGen = $userInfo['member_GenPassword'];
-	$total_price = $userInfo['total_price'];
+	$userName = $userInfo['full_name'];
+	$PhoneNumber = $userInfo['PhoneNum'];
+	$passwordGen = $password;
+	$total_price = $total;
 	$emails = $userInfo['email'];
 	$fullName = $userInfo['full_name'];
 
@@ -52,7 +52,7 @@ function makeApiSignup($userInfo)
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 		"Content-Type: application/json"
-	  ));
+	));
 
 	// Execute the cURL request
 	$response = curl_exec($ch);
@@ -135,18 +135,20 @@ var_dump($output);
 if (strpos($output, 'M') !== false) {
 
 	$userId = preg_replace('/[^0-9]/', '', $output);
-	$check = checkMembership($userId);
-	if ($check) {
-		$UserInfos = getUserInputMem($userId);
-		$OrderType = "Membership";
-		$UserTgId = $UserInfos['telegramID'];
-		$userNames = $UserInfos['member_name'];
-		$password = $UserInfos['member_GenPassword'];
-	} else {
-		$OrderType = "AgainRep";
-	}
-} else {
-	$userId = $output;
+	$UserInfos = getUserInput($userId);
+	$UserTgId = $UserInfos['UserId'];
+	$userNames = $UserInfos['UserName'];
+	$password = addMembersPayed($UserInfos, $Amount, $orderNumber);
+	$productInfo = getProductInfo($productId);
+	$respo = makeApiSignup($UserInfos, $password, $Amount);
+	date_default_timezone_set("Africa/Addis_Ababa");
+	$MembershipDate = date('Y-m-d');
+	$expirationDate = date('Y-m-d', strtotime('+1 year'));
+	SendCompletedMembership($UserTgId, $userNames, $orderNumber, $MembershipDate, $password, $expirationDate);
+	// DeletRow($userId);
+} else if (strpos($output, 'S') !== false) {
+	$userId = preg_replace('/[^0-9]/', '', $output);
+
 	$UserInfo = getUserInput($userId);
 	$OrderType = $UserInfo['orderType'];
 	$UserTgId = $UserInfo['UserId'];
@@ -158,36 +160,65 @@ if (strpos($output, 'M') !== false) {
 	$productInfo = getProductInfo($productId);
 	$selectedFirstDate = $UserInfo['selectedDate'];
 	$Userlocation = $UserInfo['location'];
+
+	if ($OrderType == "Pickup Order") {
+
+		SetCompletedPickup($UserInfo, $Amount, $orderNumber, $productInfo, "paid");
+		deleteMessage($UserTgId, $MsgLast, $MsgStart);
+		SendCompletedMsg($UserTgId, $userId, $orderNumber, $PickUpLocation, $selectedFirstDate);
+		// SendNotificationMsg($UserInfo, 'New Subscription');
+		// DeletRow($userId);
+	} elseif ($OrderType == "Delivery Order") {
+		SetCompletedDelivery($UserInfo, $Amount, $orderNumber, $productInfo, "paid");
+		deleteMessage($UserTgId, $MsgLast, $MsgStart);
+		SendCompletedDelivery($UserTgId, $Userlocation, $orderNumber, $PickUpLocation, $selectedFirstDate);
+		// SendNotificationMsg($UserInfo, 'New Subscription');
+		// DeletRow($userId);
+	}
+} else if (strpos($output, 'P') !== false) {
+	$userId = preg_replace('/[^0-9]/', '', $output);
+	$UserInfo = getUserInput($userId);
+	$OrderType = $UserInfo['orderType'];
+	$UserTgId = $UserInfo['UserId'];
+	$MsgLast = $UserInfo['LastMsg'];
+	$MsgStart = $UserInfo['StartID'];
+	$PickUpLocation = $UserInfo['ShopLocation'];
+	$Fullname = $UserInfo['UserName'] . $UserInfo['LastName'];
+
+	if ($OrderType == "Pickup Order") {
+
+
+		SetCompletedPickup($UserInfo, $Amount, $orderNumber, "payed");
+		// deleteMessage($UserTgId, $MsgLast, $MsgStart);
+		SendCompletedMsg($UserTgId, $userId, $orderNumber, $PickUpLocation);
+		SendNotificationMsg($UserInfo, 'New pickup order');
+		setStat($UserInfo);
+		// pusher
+		$data['message'] = 'New pickup order arrived';
+		$data['shop'] = $PickUpLocation;
+		$data['name'] = $Fullname;
+		$data['Orderdate'] = date("M Y,d");
+		$pusher->trigger('my-channel', 'my-event', $data);
+
+		DeletRow($userId);
+	} elseif ($OrderType == "Delivery Order") {
+		$res = Eshiservice($userId, $UserInfo);
+		$update = json_decode($res, true);
+		SetCompletedDelivery($UserInfo, $Amount, $orderNumber, "payed", $update['data']['pickup_tracking_link'], $update['data']['delivery_tracing_link'], $update['data']['job_id']);
+		SendCompletedMsgDelivery($UserTgId, $userId, $orderNumber, $update['data']['delivery_tracing_link'], $update['data']['job_id']);
+		SendNotificationMsg($UserInfo, 'New delivery order');
+		setStat($UserInfo);
+		// pusher
+
+		$data['message'] = 'New delivery order arrived';
+		$data['shop'] = $PickUpLocation;
+		$data['name'] = $Fullname;
+		$data['Orderdate'] = date("M Y,d");
+		$pusher->trigger('my-channel', 'my-event', $data);
+		DeletRow($userId);
+	}
 }
 
-
-
-if ($OrderType == "Pickup Order") {
-
-	SetCompletedPickup($UserInfo, $Amount, $orderNumber, $productInfo, "paid");
-	deleteMessage($UserTgId, $MsgLast, $MsgStart);
-	SendCompletedMsg($UserTgId, $userId, $orderNumber, $PickUpLocation, $selectedFirstDate);
-	// SendNotificationMsg($UserInfo, 'New Subscription');
-} elseif ($OrderType == "Delivery Order") {
-	SetCompletedDelivery($UserInfo, $Amount, $orderNumber, $productInfo, "paid");
-	deleteMessage($UserTgId, $MsgLast, $MsgStart);
-	SendCompletedDelivery($UserTgId, $Userlocation, $orderNumber, $PickUpLocation, $selectedFirstDate);
-	// SendNotificationMsg($UserInfo, 'New Subscription');
-} elseif ($OrderType == "Membership") {
-	$respo = makeApiSignup($UserInfos);
-	// Get the current date in the format 'Y-m-d'
-
-	date_default_timezone_set("Africa/Addis_Ababa");
-	$MembershipDate = date('Y-m-d');
-
-	// Add one year to the current date to get the expiration date
-	$expirationDate = date('Y-m-d', strtotime('+1 year'));
-	setMemberCompleted($userId, $MembershipDate, $expirationDate);
-	SendCompletedMembership($UserTgId, $userNames, $orderNumber, $MembershipDate, $password, $expirationDate);
-	// SendNotificationMsg($UserInfo, 'New Membership');
-} elseif ($OrderType == 'AgainRep') {
-	echo '"msg":"success"';
-}
 
 
 // $output1 = implode('', $userId);
